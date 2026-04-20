@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>E · 에디토리얼 매거진</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--paper:#efece6;--ink:#1c1815;--mute:#7a716a;--wine:#7a1f2b;--line:#c9c2b8}
+  html,body{background:var(--paper);color:var(--ink);font-family:'Pretendard','Inter',sans-serif;min-height:100vh;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' /></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.04'/></svg>")}
+  .wrap{max-width:1200px;margin:0 auto;padding:48px 40px 120px}
+  .masthead{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:2px solid var(--ink);font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+  .masthead .vol{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;letter-spacing:0;text-transform:none;color:var(--mute)}
+  .hero{padding:64px 0 48px;border-bottom:1px solid var(--line);text-align:center}
+  .kicker{font-family:'Playfair Display',serif;font-style:italic;color:var(--wine);font-size:18px;margin-bottom:18px}
+  h1{font-family:'Playfair Display',serif;font-size:clamp(56px,9vw,120px);font-weight:900;line-height:.95;letter-spacing:-.02em;margin-bottom:24px}
+  h1 em{font-style:italic;font-weight:400;color:var(--wine)}
+  .lead{font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:#3d3530;max-width:680px;margin:0 auto;line-height:1.55}
+  .controls{display:flex;gap:0;justify-content:center;margin:48px 0 32px;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0}
+  .chip{padding:6px 18px;border:none;background:none;color:var(--mute);font-size:13px;cursor:pointer;font-family:'Playfair Display',serif;font-style:italic;border-right:1px solid var(--line);transition:color .2s}
+  .chip:last-child{border-right:none}
+  .chip:hover{color:var(--ink)}
+  .chip.on{color:var(--wine);font-weight:700;font-style:normal}
+  .section-h{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;text-align:center;margin:64px 0 8px;letter-spacing:-.01em}
+  .section-h em{font-style:italic;color:var(--wine);font-weight:400}
+  .section-sub{text-align:center;font-family:'Playfair Display',serif;font-style:italic;color:var(--mute);margin-bottom:36px;font-size:14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:32px 40px}
+  .card{padding:28px 8px;border-top:3px double var(--ink);text-decoration:none;color:inherit;display:block;transition:transform .2s}
+  .card:hover{transform:translateY(-2px)}
+  .meta-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  .nm{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;line-height:1.1;letter-spacing:-.02em;margin-bottom:8px}
+  .by{font-family:'Playfair Display',serif;font-style:italic;color:var(--wine);font-size:14px;margin-bottom:14px}
+  .desc{font-size:14.5px;line-height:1.7;color:#3d3530;margin-bottom:14px}
+  .desc::first-letter{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;float:left;line-height:1;padding:4px 8px 0 0;color:var(--wine)}
+  .note{font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:var(--wine);padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:14px 0;text-align:center;line-height:1.5}
+  .tags{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  .tags span{padding:3px 8px;border:1px solid var(--line)}
+  .mine{background:rgba(122,31,43,.04);padding:32px 24px}
+  footer{margin-top:80px;padding-top:24px;border-top:2px solid var(--ink);text-align:center;font-family:'Playfair Display',serif;font-style:italic;color:var(--mute);font-size:14px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="masthead">
+    <span>Issue No. 01 · 2026</span>
+    <span class="vol">— commme curated —</span>
+    <span>AI · Tools · Quarterly</span>
+  </div>
+  <section class="hero">
+    <div class="kicker">— A curated selection —</div>
+    <h1>매일 쓰는<br><em>AI 도구</em>모음</h1>
+    <p class="lead">한국에서 실제로 많이 쓰는 도구와 직접 만든 작은 도구들. 과장 없이, 기능 그대로.</p>
+  </section>
+  <div class="controls" id="chips"></div>
+  <h2 class="section-h"><em>Curated</em> Tools</h2>
+  <p class="section-sub">큐레이션 한 도구 · <span id="c-count"></span></p>
+  <div class="grid" id="curated"></div>
+  <h2 class="section-h"><em>Made</em> by Me</h2>
+  <p class="section-sub">내가 만든 도구 · <span id="m-count"></span></p>
+  <div class="grid" id="mine"></div>
+  <footer>— commme · 二〇二六 —</footer>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let TOOLS=[],CATS=[],filter='all';
+async function load(){
+  const [t,c]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);
+  TOOLS=t.tools;CATS=c.categories;render();
+}
+function chips(){
+  const all=[{id:'all',name:'All'},...CATS];
+  const counts={all:TOOLS.length};CATS.forEach(c=>counts[c.id]=TOOLS.filter(t=>t.category===c.id).length);
+  document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===filter?'on':''}" data-id="${c.id}">${c.name} (${counts[c.id]||0})</button>`).join('');
+  document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.id;render()});
+}
+function card(t,i){
+  const cat=CATS.find(c=>c.id===t.category);
+  return `<a class="card ${t.is_mine?'mine':''}" href="${esc(t.url)}" target="_blank" rel="noopener">
+    <div class="meta-top"><span>${cat?esc(cat.name):''}</span><span>${esc(t.free)}</span></div>
+    <div class="nm">${esc(t.name)}</div>
+    <div class="by">— by ${esc(t.by)}</div>
+    <p class="desc">${esc(t.description)}</p>
+    ${t.my_note?`<div class="note">"${esc(t.my_note)}"</div>`:''}
+    <div class="tags">${t.tags.slice(0,4).map(x=>`<span>${esc(x)}</span>`).join('')}</div>
+  </a>`;
+}
+function render(){
+  chips();
+  const f=t=>filter==='all'||t.category===filter;
+  const cur=TOOLS.filter(t=>!t.is_mine&&f(t));
+  const mine=TOOLS.filter(t=>t.is_mine&&f(t));
+  document.getElementById('curated').innerHTML=cur.map(card).join('');
+  document.getElementById('mine').innerHTML=mine.map(card).join('');
+  document.getElementById('c-count').textContent=cur.length;
+  document.getElementById('m-count').textContent=mine.length;
+}
+load();
+</script>
+</body>
+</html>

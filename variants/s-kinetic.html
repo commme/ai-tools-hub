@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>S · 키네틱 인터랙션</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0c0a14;--card:#161325;--text:#f0ecff;--mute:#7a7595;--accent:#a78bff;--hot:#ff5d8f}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Pretendard','Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 30%,rgba(167,139,255,.15),transparent 50%),radial-gradient(circle at 80% 70%,rgba(255,93,143,.12),transparent 50%);pointer-events:none;z-index:0}
+.cursor-glow{position:fixed;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,255,.18),transparent 70%);pointer-events:none;z-index:1;transform:translate(-50%,-50%);transition:opacity .3s;mix-blend-mode:screen}
+.wrap{position:relative;z-index:2;max-width:1320px;margin:0 auto;padding:64px 28px 120px}
+.eyebrow{font-size:11px;color:var(--accent);letter-spacing:.4em;text-transform:uppercase;font-weight:700;margin-bottom:24px;opacity:0;transform:translateY(20px);animation:rise .8s .1s forwards}
+h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(56px,11vw,140px);font-weight:700;line-height:.92;letter-spacing:-.05em;margin-bottom:20px;will-change:transform}
+h1 .l{display:inline-block;opacity:0;transform:translateY(60px) rotate(8deg);animation:rise .9s forwards;animation-delay:calc(var(--i)*.05s + .15s)}
+h1 em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--accent)}
+@keyframes rise{to{opacity:1;transform:translateY(0) rotate(0)}}
+.sub{color:var(--mute);font-size:17px;max-width:560px;line-height:1.6;opacity:0;animation:rise 1s 1s forwards}
+.scroll-hint{margin-top:48px;font-size:11px;color:var(--mute);letter-spacing:.3em;text-transform:uppercase;display:flex;align-items:center;gap:12px;opacity:0;animation:rise 1s 1.2s forwards}
+.scroll-hint::after{content:"";width:60px;height:1px;background:var(--mute);animation:bar 2s ease-in-out infinite}
+@keyframes bar{50%{transform:scaleX(1.5)}}
+.controls{display:flex;gap:10px;margin:64px 0 36px;flex-wrap:wrap}
+.chip{padding:11px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:var(--mute);font-size:13px;font-weight:600;cursor:pointer;border-radius:999px;font-family:inherit;transition:all .3s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden}
+.chip::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--accent),var(--hot));opacity:0;transition:opacity .3s;z-index:-1}
+.chip:hover{color:var(--text);transform:translateY(-2px)}
+.chip.on{color:#fff;border-color:transparent}
+.chip.on::before{opacity:1}
+.chip .n{margin-left:6px;opacity:.6;font-size:11px}
+.section-h{font-family:'Instrument Serif',serif;font-style:italic;font-size:42px;font-weight:400;margin:80px 0 32px;color:var(--text)}
+.section-h .badge{font-family:'Space Grotesk',sans-serif;font-style:normal;font-size:13px;color:var(--mute);font-weight:500;margin-left:14px;letter-spacing:.1em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:24px}
+.card{position:relative;padding:28px;background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:20px;text-decoration:none;color:inherit;display:block;cursor:pointer;opacity:0;transform:translateY(40px);transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s}
+.card.in{opacity:1;transform:translateY(0);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.card.in:nth-child(1){transition-delay:.05s}
+.card.in:nth-child(2){transition-delay:.1s}
+.card.in:nth-child(3){transition-delay:.15s}
+.card.in:nth-child(4){transition-delay:.2s}
+.card.in:nth-child(5){transition-delay:.25s}
+.card.in:nth-child(6){transition-delay:.3s}
+.card.in:nth-child(7){transition-delay:.35s}
+.card.in:nth-child(8){transition-delay:.4s}
+.card:hover{border-color:rgba(167,139,255,.5);box-shadow:0 30px 60px -20px rgba(167,139,255,.3)}
+.card::after{content:"";position:absolute;inset:0;border-radius:20px;background:radial-gradient(800px circle at var(--mx,50%) var(--my,50%),rgba(167,139,255,.12),transparent 40%);pointer-events:none;opacity:0;transition:opacity .3s}
+.card:hover::after{opacity:1}
+.card>*{position:relative;z-index:1}
+.row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.nm{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;letter-spacing:-.01em;line-height:1.2;transition:transform .3s}
+.card:hover .nm{transform:translateX(4px)}
+.by{font-size:12px;color:var(--mute);margin-top:4px}
+.free{font-size:11px;font-weight:700;padding:4px 10px;background:rgba(255,93,143,.15);color:var(--hot);border-radius:6px;white-space:nowrap}
+.desc{font-size:14px;color:#bdb6d6;line-height:1.6;margin-bottom:14px}
+.note{font-family:'Instrument Serif',serif;font-style:italic;font-size:15.5px;color:var(--accent);padding:12px 14px;border-left:2px solid var(--accent);background:rgba(167,139,255,.05);border-radius:0 8px 8px 0;margin-bottom:14px;line-height:1.5}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11px;padding:4px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:6px;color:var(--mute)}
+.mine{border-color:rgba(255,93,143,.3)}
+.mine .nm{background:linear-gradient(135deg,var(--accent),var(--hot));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+footer{margin-top:120px;text-align:center;color:var(--mute);font-family:'Instrument Serif',serif;font-style:italic;font-size:18px}
+</style></head><body>
+<div class="cursor-glow" id="glow"></div>
+<main class="wrap">
+<div class="eyebrow">▸ Kinetic · Interactive · 2026</div>
+<h1 id="title"></h1>
+<p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들. <em style="font-family:'Instrument Serif',serif;font-style:italic;color:var(--accent)">스크롤하면 살아납니다.</em></p>
+<div class="scroll-hint">scroll to explore</div>
+<div class="controls" id="chips"></div>
+<div class="section-h">큐레이션 한 도구 <span class="badge" id="c-count"></span></div>
+<div class="grid" id="curated"></div>
+<div class="section-h">내가 만든 도구 <span class="badge" id="m-count"></span></div>
+<div class="grid" id="mine"></div>
+<footer>~ commme · 2026 ~ move your cursor ~</footer>
+</main>
+<script>
+// title splitting
+const t='매일 쓰는 AI 도구';
+document.getElementById('title').innerHTML=t.split('').map((c,i)=>`<span class="l" style="--i:${i}">${c===' '?'&nbsp;':c}</span>`).join('')+'<br><em>매일 쓰는</em>';
+document.getElementById('title').innerHTML=t.split('').map((c,i)=>`<span class="l" style="--i:${i}">${c===' '?'&nbsp;':c}</span>`).join('');
+
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let TOOLS=[],CATS=[],filter='all';
+async function load(){const[t,c]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);TOOLS=t.tools;CATS=c.categories;render()}
+function chips(){const all=[{id:'all',name:'전체',emoji:'✦'},...CATS];const counts={all:TOOLS.length};CATS.forEach(c=>counts[c.id]=TOOLS.filter(t=>t.category===c.id).length);document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===filter?'on':''}" data-id="${c.id}">${c.emoji} ${c.name}<span class="n">${counts[c.id]||0}</span></button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.id;render()})}
+function card(t){return `<a class="card ${t.is_mine?'mine':''}" href="${esc(t.url)}" target="_blank" rel="noopener"><div class="row"><div><div class="nm">${esc(t.name)}</div><div class="by">${esc(t.by)}</div></div><span class="free">${esc(t.free)}</span></div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}<div class="tags">${t.tags.slice(0,4).map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div></a>`}
+function bindFx(){
+  document.querySelectorAll('.card').forEach(c=>{
+    c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')});
+  });
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.15,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.card').forEach(c=>io.observe(c));
+}
+function render(){chips();const f=t=>filter==='all'||t.category===filter;const cur=TOOLS.filter(t=>!t.is_mine&&f(t));const mine=TOOLS.filter(t=>t.is_mine&&f(t));document.getElementById('curated').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mine.map(card).join('');document.getElementById('c-count').textContent=`(${cur.length})`;document.getElementById('m-count').textContent=`(${mine.length})`;bindFx()}
+// cursor glow
+const glow=document.getElementById('glow');let mx=0,my=0,gx=0,gy=0;
+window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+function animate(){gx+=(mx-gx)*.1;gy+=(my-gy)*.1;glow.style.left=gx+'px';glow.style.top=gy+'px';requestAnimationFrame(animate)}animate();
+// title parallax
+window.addEventListener('scroll',()=>{const y=window.scrollY;const t=document.querySelector('h1');if(t)t.style.transform=`translateY(${y*.3}px)`});
+load();
+</script></body></html>

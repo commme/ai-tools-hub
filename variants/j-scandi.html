@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>J · 스칸디나비안</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f4f1ea;--ink:#2c2a26;--mute:#8a8378;--sage:#a8b596;--sage-dk:#6e7d5e;--terra:#c97e63;--paper:#fbf9f4;--line:#e6e0d2}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard',sans-serif;min-height:100vh}
+.wrap{max-width:1240px;margin:0 auto;padding:80px 32px 120px}
+header{display:grid;grid-template-columns:1fr 320px;gap:48px;align-items:end;margin-bottom:64px;padding-bottom:48px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--terra);margin-bottom:16px}
+h1{font-family:'Fraunces',serif;font-size:clamp(48px,7vw,84px);font-weight:500;line-height:1.05;letter-spacing:-.02em}
+h1 em{font-style:italic;color:var(--sage-dk)}
+.lead{color:#5a554d;font-size:15px;line-height:1.7;border-left:3px solid var(--sage);padding-left:18px}
+.controls{display:flex;gap:8px;margin:32px 0 32px;flex-wrap:wrap}
+.chip{padding:10px 18px;background:var(--paper);border:1px solid var(--line);color:var(--ink);font-size:13px;font-weight:500;cursor:pointer;border-radius:999px;font-family:inherit;transition:all .2s}
+.chip:hover{border-color:var(--sage-dk);background:#fff}
+.chip.on{background:var(--sage-dk);color:var(--paper);border-color:var(--sage-dk)}
+.chip .n{margin-left:6px;opacity:.6;font-size:11px}
+.section-h{font-family:'Fraunces',serif;font-style:italic;font-size:24px;color:var(--ink);margin:56px 0 20px;font-weight:400}
+.section-h em{color:var(--terra);font-style:italic}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
+.card{padding:24px;background:var(--paper);border:1px solid var(--line);border-radius:18px;text-decoration:none;color:inherit;transition:all .25s}
+.card:hover{transform:translateY(-3px);border-color:var(--sage-dk);box-shadow:0 12px 24px rgba(110,125,94,.08)}
+.row{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.ic{width:46px;height:46px;border-radius:14px;background:var(--sage);color:var(--paper);display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:500;font-size:22px;flex-shrink:0}
+.nm{font-family:'Fraunces',serif;font-size:20px;font-weight:500;letter-spacing:-.01em;line-height:1.2}
+.by{font-size:12.5px;color:var(--mute);margin-top:3px}
+.desc{font-size:14px;color:#4a443e;line-height:1.65;margin-bottom:14px}
+.note{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--terra);background:rgba(201,126,99,.08);padding:10px 14px;border-radius:10px;margin-bottom:14px;line-height:1.55}
+.note::before{content:"" '" '";font-family:'Fraunces',serif;font-size:20px;line-height:0;vertical-align:middle;color:var(--terra);opacity:.5;margin-right:4px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11px;padding:3px 9px;background:rgba(168,181,150,.18);color:var(--sage-dk);border-radius:999px}
+.free{display:inline-block;font-size:11px;padding:3px 10px;background:var(--ink);color:var(--paper);border-radius:999px;margin-left:auto;align-self:flex-start;white-space:nowrap}
+.mine .ic{background:var(--terra)}
+footer{margin-top:80px;padding-top:24px;border-top:1px solid var(--line);text-align:center;font-family:'Fraunces',serif;font-style:italic;color:var(--mute);font-size:14px}
+@media(max-width:720px){header{grid-template-columns:1fr}}
+</style></head><body>
+<main class="wrap">
+<header>
+<div>
+<div class="eyebrow">— Curated · 2026 —</div>
+<h1>매일 쓰는<br><em>AI 도구</em>를 모았어요</h1>
+</div>
+<p class="lead">한국에서 실제로 많이 쓰는 도구와 직접 만든 작은 도구들. 과장 없이 기능 그대로, 천천히 골랐습니다.</p>
+</header>
+<div class="controls" id="chips"></div>
+<div class="section-h"><em>Curated</em> Tools <span style="color:var(--mute);font-style:normal;font-size:14px" id="c-count"></span></div>
+<div class="grid" id="curated"></div>
+<div class="section-h"><em>Made</em> by Me <span style="color:var(--mute);font-style:normal;font-size:14px" id="m-count"></span></div>
+<div class="grid" id="mine"></div>
+<footer>commme — 二〇二六</footer>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let TOOLS=[],CATS=[],filter='all';
+async function load(){const[t,c]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);TOOLS=t.tools;CATS=c.categories;render()}
+function chips(){const all=[{id:'all',name:'전체',emoji:'·'},...CATS];const counts={all:TOOLS.length};CATS.forEach(c=>counts[c.id]=TOOLS.filter(t=>t.category===c.id).length);document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===filter?'on':''}" data-id="${c.id}">${c.emoji} ${c.name}<span class="n">${counts[c.id]||0}</span></button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.id;render()})}
+function card(t){return `<a class="card ${t.is_mine?'mine':''}" href="${esc(t.url)}" target="_blank" rel="noopener"><div class="row"><div class="ic">${esc(t.name[0])}</div><div style="flex:1"><div class="nm">${esc(t.name)}</div><div class="by">${esc(t.by)}</div></div><span class="free">${esc(t.free)}</span></div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}<div class="tags">${t.tags.slice(0,4).map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div></a>`}
+function render(){chips();const f=t=>filter==='all'||t.category===filter;const cur=TOOLS.filter(t=>!t.is_mine&&f(t));const mine=TOOLS.filter(t=>t.is_mine&&f(t));document.getElementById('curated').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mine.map(card).join('');document.getElementById('c-count').textContent=`· ${cur.length}`;document.getElementById('m-count').textContent=`· ${mine.length}`}
+load();
+</script></body></html>

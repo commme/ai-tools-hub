@@ -1,0 +1,12 @@
+{
+  "categories": [
+    { "id": "writing",      "name": "글쓰기",       "emoji": "✍️" },
+    { "id": "image",        "name": "이미지 생성",   "emoji": "🎨" },
+    { "id": "video",        "name": "영상",         "emoji": "🎬" },
+    { "id": "audio",        "name": "음악·음성",     "emoji": "🎵" },
+    { "id": "coding",       "name": "코딩",         "emoji": "💻" },
+    { "id": "productivity", "name": "생산성",       "emoji": "⚡" },
+    { "id": "design",       "name": "디자인·3D",    "emoji": "🎭" },
+    { "id": "research",     "name": "검색·리서치",   "emoji": "🔍" }
+  ]
+}

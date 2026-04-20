@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>K · 모자이크 핀터레스트</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#fafafa;--ink:#1a1a1a;--mute:#6b6b6b}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard','Plus Jakarta Sans',sans-serif;min-height:100vh}
+.wrap{max-width:1400px;margin:0 auto;padding:48px 28px 120px}
+.hero{text-align:center;padding:48px 0 56px}
+.eyebrow{display:inline-block;padding:6px 16px;background:var(--ink);color:#fff;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.1em;margin-bottom:24px}
+h1{font-size:clamp(48px,7vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:18px}
+.sub{color:var(--mute);font-size:17px;max-width:540px;margin:0 auto;line-height:1.6}
+.controls{display:flex;gap:8px;margin:0 0 32px;flex-wrap:wrap;justify-content:center}
+.chip{padding:10px 18px;background:#fff;border:1.5px solid #e6e6e6;color:var(--ink);font-size:13.5px;font-weight:600;cursor:pointer;border-radius:999px;font-family:inherit;transition:all .15s}
+.chip:hover{border-color:var(--ink)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip .n{margin-left:5px;opacity:.5;font-size:11px}
+.section-h{font-size:20px;font-weight:700;margin:48px 0 20px;display:flex;align-items:center;gap:12px}
+.section-h .badge{font-size:13px;font-weight:600;color:var(--mute);background:#f0f0f0;padding:3px 10px;border-radius:999px}
+.masonry{column-count:4;column-gap:16px}
+@media(max-width:1100px){.masonry{column-count:3}}
+@media(max-width:760px){.masonry{column-count:2}}
+@media(max-width:480px){.masonry{column-count:1}}
+.card{display:block;break-inside:avoid;margin-bottom:16px;padding:20px;border-radius:20px;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s;border:1.5px solid transparent;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.08)}
+.card.size-l{padding:28px}
+.card.size-l .nm{font-size:24px}
+.card.size-l .desc{font-size:15px}
+/* color palette per category */
+.c-writing{background:#ffe8d6}
+.c-research{background:#caf0c4}
+.c-image{background:#ffd0e0}
+.c-video{background:#d0d8ff}
+.c-audio{background:#fff0a8}
+.c-coding{background:#1a1a1a;color:#fff}
+.c-coding .by,.c-coding .desc,.c-coding .tag{color:#ddd}
+.c-coding .tag{background:rgba(255,255,255,.1)}
+.c-productivity{background:#c4ecf0}
+.c-design{background:#e8d6ff}
+.row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.nm{font-size:19px;font-weight:800;line-height:1.2;letter-spacing:-.01em}
+.by{font-size:12.5px;color:var(--mute);margin-top:4px;font-weight:500}
+.free{font-size:11px;font-weight:700;padding:4px 10px;background:rgba(0,0,0,.08);border-radius:999px;white-space:nowrap}
+.c-coding .free{background:rgba(255,255,255,.15);color:#fff}
+.desc{font-size:14px;line-height:1.55;margin-bottom:12px;font-weight:500;color:#3a3a3a}
+.note{font-size:13px;font-weight:600;background:rgba(0,0,0,.07);padding:10px 12px;border-radius:12px;margin-bottom:12px;line-height:1.5}
+.note::before{content:"💭 "}
+.c-coding .note{background:rgba(255,255,255,.1);color:#fff}
+.tags{display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:600;padding:3px 9px;background:rgba(0,0,0,.06);border-radius:999px;color:#3a3a3a}
+.mine{outline:3px solid var(--ink);outline-offset:-3px}
+footer{margin-top:80px;text-align:center;color:var(--mute);font-size:13px;font-weight:500}
+</style></head><body>
+<main class="wrap">
+<section class="hero">
+<span class="eyebrow">✨ AI TOOLS · 2026</span>
+<h1>매일 쓰는 AI 도구</h1>
+<p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들. 과장 없이, 기능 그대로.</p>
+</section>
+<div class="controls" id="chips"></div>
+<div class="section-h">큐레이션 한 도구 <span class="badge" id="c-count"></span></div>
+<div class="masonry" id="curated"></div>
+<div class="section-h">내가 만든 도구 <span class="badge" id="m-count"></span></div>
+<div class="masonry" id="mine"></div>
+<footer>commme · 2026</footer>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let TOOLS=[],CATS=[],filter='all';
+async function load(){const[t,c]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);TOOLS=t.tools;CATS=c.categories;render()}
+function chips(){const all=[{id:'all',name:'전체',emoji:'✨'},...CATS];const counts={all:TOOLS.length};CATS.forEach(c=>counts[c.id]=TOOLS.filter(t=>t.category===c.id).length);document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===filter?'on':''}" data-id="${c.id}">${c.emoji} ${c.name}<span class="n">${counts[c.id]||0}</span></button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.id;render()})}
+function card(t){const big=t.my_note?'size-l':'';return `<a class="card c-${t.category} ${big} ${t.is_mine?'mine':''}" href="${esc(t.url)}" target="_blank" rel="noopener"><div class="row"><div><div class="nm">${esc(t.name)}</div><div class="by">${esc(t.by)}</div></div><span class="free">${esc(t.free)}</span></div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}<div class="tags">${t.tags.slice(0,4).map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div></a>`}
+function render(){chips();const f=t=>filter==='all'||t.category===filter;const cur=TOOLS.filter(t=>!t.is_mine&&f(t));const mine=TOOLS.filter(t=>t.is_mine&&f(t));document.getElementById('curated').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mine.map(card).join('');document.getElementById('c-count').textContent=cur.length;document.getElementById('m-count').textContent=mine.length}
+load();
+</script></body></html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>Q · 블롭 모핑</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#fff5ee;--ink:#1a1330;--mute:#7c6f99;--p1:#ff6b9d;--p2:#a78bff;--p3:#ffd166;--p4:#06d6a0}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard','Inter',sans-serif;min-height:100vh;overflow-x:hidden;position:relative}
+.blob-bg{position:fixed;inset:0;z-index:0;overflow:hidden;filter:blur(60px);opacity:.55}
+.blob-bg svg{position:absolute}
+.b1{top:-10%;left:-10%;width:600px;height:600px;animation:float1 22s ease-in-out infinite}
+.b2{bottom:-10%;right:-10%;width:700px;height:700px;animation:float2 28s ease-in-out infinite}
+.b3{top:40%;left:50%;width:500px;height:500px;animation:float3 25s ease-in-out infinite}
+@keyframes float1{50%{transform:translate(80px,60px) rotate(120deg)}}
+@keyframes float2{50%{transform:translate(-100px,-80px) rotate(-100deg)}}
+@keyframes float3{50%{transform:translate(-60px,90px) rotate(180deg)}}
+.wrap{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:80px 28px 120px}
+.eyebrow{display:inline-block;padding:8px 18px;background:#fff;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-bottom:24px;box-shadow:0 8px 30px -10px rgba(167,139,255,.4)}
+h1{font-family:'Fraunces',serif;font-size:clamp(56px,9vw,108px);font-weight:900;line-height:.95;letter-spacing:-.04em;margin-bottom:20px}
+h1 em{font-style:italic;font-weight:400;color:var(--p1)}
+.sub{color:var(--mute);font-size:17px;max-width:560px;line-height:1.6;font-weight:500}
+.controls{display:flex;gap:10px;margin:48px 0 32px;flex-wrap:wrap}
+.chip{padding:10px 20px;background:#fff;border:none;color:var(--mute);font-size:13px;font-weight:700;cursor:pointer;border-radius:999px;font-family:inherit;transition:all .25s;box-shadow:0 4px 16px -4px rgba(167,139,255,.2)}
+.chip:hover{color:var(--ink);transform:translateY(-2px)}
+.chip.on{background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff;box-shadow:0 8px 24px -4px rgba(255,107,157,.5)}
+.chip .n{margin-left:6px;opacity:.6;font-weight:500;font-size:11px}
+.section-h{font-family:'Fraunces',serif;font-size:32px;font-weight:900;font-style:italic;margin:64px 0 28px;color:var(--ink)}
+.section-h .badge{font-family:'Inter',sans-serif;font-style:normal;font-size:13px;color:var(--mute);font-weight:600;margin-left:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:28px}
+.card{position:relative;padding:32px;text-decoration:none;color:inherit;display:block;transition:all .35s cubic-bezier(.2,.8,.2,1)}
+.card-blob{position:absolute;inset:0;z-index:-1;transition:all .5s cubic-bezier(.2,.8,.2,1)}
+.card-blob path{fill:#fff;filter:drop-shadow(0 12px 32px rgba(167,139,255,.25))}
+.card:hover{transform:translateY(-6px) rotate(-1deg)}
+.card:hover .card-blob path{fill:#fff;filter:drop-shadow(0 20px 40px rgba(255,107,157,.35))}
+.card:nth-child(4n+1) .card-blob path{fill:#fff}
+.card:nth-child(4n+2) .card-blob path{fill:#fef0f5}
+.card:nth-child(4n+3) .card-blob path{fill:#f0ebff}
+.card:nth-child(4n+4) .card-blob path{fill:#fff8e8}
+.row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.nm{font-family:'Fraunces',serif;font-size:22px;font-weight:700;line-height:1.15;letter-spacing:-.01em}
+.by{font-size:12px;color:var(--mute);margin-top:4px;font-weight:500}
+.free{font-size:11px;font-weight:700;padding:4px 10px;background:var(--p3);color:var(--ink);border-radius:999px;white-space:nowrap}
+.desc{font-size:14px;color:#5d4f7a;line-height:1.6;margin-bottom:14px;font-weight:500}
+.note{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--p1);padding:10px 0;border-top:1px dashed rgba(167,139,255,.3);border-bottom:1px dashed rgba(167,139,255,.3);margin-bottom:14px;line-height:1.5}
+.note::before{content:"" "}
+.note::after{content:" ""}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11px;padding:4px 10px;background:rgba(167,139,255,.12);border-radius:999px;color:var(--p2);font-weight:600}
+.mine .card-blob path{fill:#fff5d6 !important}
+footer{margin-top:80px;text-align:center;color:var(--mute);font-size:13px;font-family:'Fraunces',serif;font-style:italic}
+</style></head><body>
+<div class="blob-bg">
+<svg class="b1" viewBox="0 0 200 200"><path fill="#ff6b9d" d="M48,-58C61,-46,69,-29,71,-12C73,5,69,22,59,35C49,48,33,57,15,63C-3,69,-22,72,-37,65C-52,58,-63,41,-67,23C-71,5,-68,-14,-59,-29C-50,-44,-35,-55,-18,-63C-1,-71,17,-76,32,-71C47,-66,35,-70,48,-58Z" transform="translate(100 100)"/></svg>
+<svg class="b2" viewBox="0 0 200 200"><path fill="#a78bff" d="M52,-65C65,-52,71,-32,72,-13C73,6,69,25,58,38C47,51,29,58,11,62C-7,66,-26,67,-40,58C-54,49,-63,30,-67,10C-71,-10,-70,-31,-60,-45C-50,-59,-31,-66,-12,-67C7,-68,25,-63,38,-55C51,-47,39,-78,52,-65Z" transform="translate(100 100)"/></svg>
+<svg class="b3" viewBox="0 0 200 200"><path fill="#ffd166" d="M44,-54C57,-43,67,-28,69,-12C71,4,65,21,55,35C45,49,31,60,14,65C-3,70,-22,69,-37,60C-52,51,-63,34,-66,16C-69,-2,-64,-21,-54,-35C-44,-49,-29,-58,-13,-62C3,-66,21,-65,44,-54Z" transform="translate(100 100)"/></svg>
+</div>
+<main class="wrap">
+<span class="eyebrow">✦ AI Tools Collection</span>
+<h1>매일 쓰는<br><em>AI 도구</em> 모음</h1>
+<p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들. 부드럽게 흐르는 블롭 위에.</p>
+<div class="controls" id="chips"></div>
+<div class="section-h">큐레이션 한 도구 <span class="badge" id="c-count"></span></div>
+<div class="grid" id="curated"></div>
+<div class="section-h">내가 만든 도구 <span class="badge" id="m-count"></span></div>
+<div class="grid" id="mine"></div>
+<footer>~ commme · 2026 ~</footer>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const BLOBS=[
+'M48,-58C61,-46,69,-29,71,-12C73,5,69,22,59,35C49,48,33,57,15,63C-3,69,-22,72,-37,65C-52,58,-63,41,-67,23C-71,5,-68,-14,-59,-29C-50,-44,-35,-55,-18,-63C-1,-71,17,-76,32,-71C47,-66,35,-70,48,-58Z',
+'M52,-65C65,-52,71,-32,72,-13C73,6,69,25,58,38C47,51,29,58,11,62C-7,66,-26,67,-40,58C-54,49,-63,30,-67,10C-71,-10,-70,-31,-60,-45C-50,-59,-31,-66,-12,-67C7,-68,25,-63,38,-55C51,-47,39,-78,52,-65Z',
+'M44,-54C57,-43,67,-28,69,-12C71,4,65,21,55,35C45,49,31,60,14,65C-3,70,-22,69,-37,60C-52,51,-63,34,-66,16C-69,-2,-64,-21,-54,-35C-44,-49,-29,-58,-13,-62C3,-66,21,-65,44,-54Z',
+'M40,-50C53,-40,65,-27,68,-12C71,3,65,19,56,33C47,47,34,58,18,63C2,68,-16,67,-31,59C-46,51,-58,36,-62,19C-66,2,-62,-17,-52,-31C-42,-45,-26,-54,-9,-58C8,-62,27,-60,40,-50Z'
+];
+let TOOLS=[],CATS=[],filter='all';
+async function load(){const[t,c]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);TOOLS=t.tools;CATS=c.categories;render()}
+function chips(){const all=[{id:'all',name:'전체',emoji:'✦'},...CATS];const counts={all:TOOLS.length};CATS.forEach(c=>counts[c.id]=TOOLS.filter(t=>t.category===c.id).length);document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===filter?'on':''}" data-id="${c.id}">${c.emoji} ${c.name}<span class="n">${counts[c.id]||0}</span></button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.id;render()})}
+function card(t,i){const blob=BLOBS[i%BLOBS.length];return `<a class="card ${t.is_mine?'mine':''}" href="${esc(t.url)}" target="_blank" rel="noopener"><svg class="card-blob" viewBox="-100 -100 200 200" preserveAspectRatio="none"><path d="${blob}"/></svg><div class="row"><div><div class="nm">${esc(t.name)}</div><div class="by">${esc(t.by)}</div></div><span class="free">${esc(t.free)}</span></div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}<div class="tags">${t.tags.slice(0,4).map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div></a>`}
+function render(){chips();const f=t=>filter==='all'||t.category===filter;const cur=TOOLS.filter(t=>!t.is_mine&&f(t));const mine=TOOLS.filter(t=>t.is_mine&&f(t));document.getElementById('curated').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mine.map(card).join('');document.getElementById('c-count').textContent=`(${cur.length})`;document.getElementById('m-count').textContent=`(${mine.length})`}
+load();
+</script></body></html>

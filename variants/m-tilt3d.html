@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>M · 3D 틸트 패럴랙스</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#08070d;--card:#15131e;--text:#e8e6f0;--mute:#7a7590;--p1:#7c3aed;--p2:#06b6d4}
+body{background:var(--bg);color:var(--text);font-family:'Pretendard','Sora',sans-serif;min-height:100vh;perspective:1500px;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:
+  radial-gradient(circle at 20% 30%,rgba(124,58,237,.25),transparent 50%),
+  radial-gradient(circle at 80% 70%,rgba(6,182,212,.2),transparent 50%);z-index:0;animation:bg 20s ease-in-out infinite}
+@keyframes bg{50%{filter:hue-rotate(30deg)}}
+.wrap{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:80px 28px 120px;transform-style:preserve-3d}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--p2);letter-spacing:.3em;text-transform:uppercase;margin-bottom:18px}
+h1{font-family:'Sora',sans-serif;font-size:clamp(56px,9vw,108px);font-weight:800;line-height:.95;letter-spacing:-.04em;background:linear-gradient(135deg,#fff,var(--p1) 60%,var(--p2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;text-shadow:0 0 80px rgba(124,58,237,.3)}
+.sub{color:var(--mute);font-size:17px;max-width:560px;line-height:1.6}
+.controls{display:flex;gap:10px;margin:48px 0 32px;flex-wrap:wrap}
+.chip{padding:11px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--mute);font-size:13px;font-weight:600;cursor:pointer;border-radius:999px;font-family:inherit;backdrop-filter:blur(20px);transition:all .25s}
+.chip:hover{color:var(--text);border-color:var(--p2)}
+.chip.on{background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff;border-color:transparent}
+.chip .n{margin-left:6px;opacity:.6;font-family:'JetBrains Mono',monospace;font-size:11px}
+.section-h{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mute);letter-spacing:.3em;text-transform:uppercase;margin:64px 0 24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:24px;perspective:1200px}
+.card{position:relative;padding:24px;background:linear-gradient(135deg,var(--card),#1c1828);border:1px solid rgba(255,255,255,.08);border-radius:20px;text-decoration:none;color:inherit;transform-style:preserve-3d;transition:transform .15s,box-shadow .25s;will-change:transform;cursor:pointer}
+.card:hover{box-shadow:0 30px 60px -20px rgba(124,58,237,.4),0 0 0 1px var(--p2) inset}
+.card::before{content:"";position:absolute;inset:0;border-radius:20px;background:radial-gradient(800px at var(--mx,50%) var(--my,50%),rgba(124,58,237,.15),transparent 40%);pointer-events:none;opacity:0;transition:opacity .25s}
+.card:hover::before{opacity:1}
+.card>*{transform:translateZ(40px)}
+.card .ic{transform:translateZ(80px)}
+.card .free{transform:translateZ(60px)}
+.row{display:flex;align-items:center;gap:14px;margin-bottom:14px;position:relative;z-index:1}
+.ic{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--p1),var(--p2));display:grid;place-items:center;font-weight:800;color:#fff;font-size:20px;box-shadow:0 12px 24px -8px rgba(124,58,237,.5)}
+.nm{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;letter-spacing:-.01em}
+.by{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mute);margin-top:3px}
+.free{position:absolute;top:18px;right:18px;font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:4px 9px;background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.3);color:var(--p2);border-radius:6px}
+.desc{font-size:13.5px;color:#bdb8d0;line-height:1.55;margin-bottom:14px;position:relative;z-index:1}
+.note{font-size:13px;color:var(--p2);background:rgba(6,182,212,.07);border-left:2px solid var(--p2);padding:10px 12px;border-radius:0 8px 8px 0;margin-bottom:14px;position:relative;z-index:1}
+.tags{display:flex;gap:6px;flex-wrap:wrap;position:relative;z-index:1}
+.tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:3px 8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:5px;color:var(--mute)}
+.mine .ic{background:linear-gradient(135deg,#fbbf24,#f97316)}
+.mine{box-shadow:0 0 0 1px rgba(251,191,36,.2)}
+footer{margin-top:80px;text-align:center;color:var(--mute);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase}
+</style></head><body>
+<main class="wrap">
+<div class="eyebrow">// AI · TOOLS · 2026 · 3D</div>
+<h1>매일 쓰는<br>AI 도구</h1>
+<p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들. 카드 위에 마우스를 움직여보세요.</p>
+<div class="controls" id="chips"></div>
+<div class="section-h">— Curated <span id="c-count"></span></div>
+<div class="grid" id="curated"></div>
+<div class="section-h">— Made by Me <span id="m-count"></span></div>
+<div class="grid" id="mine"></div>
+<footer>commme · 2026</footer>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let TOOLS=[],CATS=[],filter='all';
+async function load(){const[t,c]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);TOOLS=t.tools;CATS=c.categories;render()}
+function chips(){const all=[{id:'all',name:'전체'},...CATS.map(c=>({id:c.id,name:c.name}))];const counts={all:TOOLS.length};CATS.forEach(c=>counts[c.id]=TOOLS.filter(t=>t.category===c.id).length);document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===filter?'on':''}" data-id="${c.id}">${c.name}<span class="n">${counts[c.id]||0}</span></button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.id;render()})}
+function card(t){return `<a class="card ${t.is_mine?'mine':''}" href="${esc(t.url)}" target="_blank" rel="noopener"><span class="free">${esc(t.free)}</span><div class="row"><div class="ic">${esc(t.name[0])}</div><div><div class="nm">${esc(t.name)}</div><div class="by">${esc(t.by)}</div></div></div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}<div class="tags">${t.tags.slice(0,4).map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div></a>`}
+function bindTilt(){document.querySelectorAll('.card').forEach(c=>{
+  c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();const px=(e.clientX-r.left)/r.width;const py=(e.clientY-r.top)/r.height;const ry=(px-.5)*16;const rx=(.5-py)*16;c.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg) translateZ(20px)`;c.style.setProperty('--mx',px*100+'%');c.style.setProperty('--my',py*100+'%')});
+  c.addEventListener('mouseleave',()=>{c.style.transform='rotateX(0) rotateY(0) translateZ(0)'});
+})}
+function render(){chips();const f=t=>filter==='all'||t.category===filter;const cur=TOOLS.filter(t=>!t.is_mine&&f(t));const mine=TOOLS.filter(t=>t.is_mine&&f(t));document.getElementById('curated').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mine.map(card).join('');document.getElementById('c-count').textContent=`(${cur.length})`;document.getElementById('m-count').textContent=`(${mine.length})`;bindTilt()}
+load();
+</script></body></html>

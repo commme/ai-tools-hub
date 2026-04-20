@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>H · Notion 도큐먼트</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#fff;--text:#37352f;--mute:#787774;--hover:#f7f6f3;--line:#e9e9e7;--blue:#2383e2;--accent-bg:#fdebec;--accent:#e03e3e}
+body{background:var(--bg);color:var(--text);font-family:'Pretendard','Inter',sans-serif;font-size:16px;line-height:1.5}
+.wrap{max-width:900px;margin:0 auto;padding:80px 96px 120px}
+.icon{font-size:64px;margin-bottom:14px}
+h1{font-size:40px;font-weight:700;line-height:1.2;letter-spacing:-.02em;margin-bottom:8px}
+.props{display:flex;gap:32px;margin:24px 0 32px;font-size:14px;color:var(--mute);padding:8px 0}
+.prop{display:flex;align-items:center;gap:8px}
+.prop .l{color:var(--mute)}
+.prop .v{color:var(--text);background:var(--hover);padding:2px 8px;border-radius:4px}
+.callout{display:flex;gap:14px;padding:16px;background:var(--hover);border-radius:6px;margin:24px 0;font-size:14.5px;line-height:1.55}
+.callout .ic{font-size:22px;flex-shrink:0}
+.divider{height:1px;background:var(--line);margin:32px 0}
+.h2{font-size:24px;font-weight:700;margin:40px 0 12px;letter-spacing:-.01em;display:flex;align-items:center;gap:6px}
+.h2::before{content:"›";color:var(--mute)}
+.controls{display:flex;gap:6px;margin:14px 0 20px;flex-wrap:wrap}
+.chip{padding:5px 10px;background:var(--hover);border:1px solid transparent;color:var(--text);font-size:13px;font-weight:500;cursor:pointer;border-radius:4px;font-family:inherit}
+.chip:hover{background:#ebeae5}
+.chip.on{background:var(--text);color:#fff}
+.chip .n{opacity:.5;margin-left:4px;font-size:11px}
+.tbl{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.row{display:grid;grid-template-columns:42px 1fr 110px;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;align-items:center;transition:background .1s}
+.row:last-child{border-bottom:none}
+.row:hover{background:var(--hover)}
+.tag-icon{width:32px;height:32px;border-radius:6px;background:#e8e8e6;display:grid;place-items:center;font-weight:600;font-size:14px;color:var(--text);grid-row:span 2}
+.body{display:flex;flex-direction:column;gap:6px;min-width:0}
+.line1{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nm{font-weight:600;font-size:15.5px}
+.by{color:var(--mute);font-size:13px}
+.by::before{content:"·";margin-right:6px;color:var(--line)}
+.desc{color:#5a554d;font-size:13.5px;line-height:1.5}
+.note{color:var(--accent);background:var(--accent-bg);padding:6px 10px;border-radius:4px;font-size:12.5px;margin-top:6px;display:inline-block}
+.note::before{content:"💬 "}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.tag{font-size:11.5px;background:var(--hover);padding:2px 7px;border-radius:3px;color:var(--mute)}
+.meta{text-align:right;font-size:12px;color:var(--mute);grid-row:span 2}
+.free{display:inline-block;padding:2px 8px;border-radius:4px;font-weight:500;font-size:11.5px;background:#dbeafe;color:#1e40af}
+.arrow{display:block;color:var(--mute);margin-top:6px;font-size:14px}
+footer{margin-top:80px;padding-top:24px;border-top:1px solid var(--line);text-align:center;color:var(--mute);font-size:13px}
+@media(max-width:720px){.wrap{padding:48px 24px 80px}.row{grid-template-columns:36px 1fr;}.meta{grid-column:1/-1;text-align:left;padding-left:48px}}
+</style></head><body>
+<main class="wrap">
+<div class="icon">🤖</div>
+<h1>매일 쓰는 AI 도구 모음</h1>
+<div class="props">
+<div class="prop"><span class="l">📅 Updated</span><span class="v">2026-04-20</span></div>
+<div class="prop"><span class="l">👤 Curator</span><span class="v">commme</span></div>
+<div class="prop"><span class="l">🏷️ Type</span><span class="v">DB · 32 tools</span></div>
+</div>
+<div class="callout"><div class="ic">📌</div><div>한국에서 실제로 많이 쓰는 AI 도구와 직접 만든 작은 도구들. 과장 없이 기능 그대로. 카테고리로 필터링하거나 카드를 클릭해서 바로 이동.</div></div>
+<div class="divider"></div>
+<div class="h2">필터</div>
+<div class="controls" id="chips"></div>
+<div class="h2">큐레이션 한 도구 <span style="color:var(--mute);font-weight:500;font-size:14px;margin-left:4px" id="c-count"></span></div>
+<div class="tbl" id="curated"></div>
+<div class="h2">내가 만든 도구 <span style="color:var(--mute);font-weight:500;font-size:14px;margin-left:4px" id="m-count"></span></div>
+<div class="tbl" id="mine"></div>
+<footer>commme · ai-tools-hub · 2026</footer>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let TOOLS=[],CATS=[],filter='all';
+async function load(){const[t,c]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);TOOLS=t.tools;CATS=c.categories;render()}
+function chips(){const all=[{id:'all',name:'전체',emoji:'📂'},...CATS];const counts={all:TOOLS.length};CATS.forEach(c=>counts[c.id]=TOOLS.filter(t=>t.category===c.id).length);document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===filter?'on':''}" data-id="${c.id}">${c.emoji} ${c.name}<span class="n">${counts[c.id]||0}</span></button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.id;render()})}
+function row(t){const cat=CATS.find(c=>c.id===t.category);return `<a class="row" href="${esc(t.url)}" target="_blank" rel="noopener">
+<div class="tag-icon">${esc(t.name[0])}</div>
+<div class="body"><div class="line1"><span class="nm">${esc(t.name)}</span><span class="by">${esc(t.by)}</span>${cat?`<span class="tag">${cat.emoji} ${esc(cat.name)}</span>`:''}</div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}<div class="tags">${t.tags.slice(0,5).map(x=>`<span class="tag">#${esc(x)}</span>`).join('')}</div></div>
+<div class="meta"><span class="free">${esc(t.free)}</span><span class="arrow">↗</span></div></a>`}
+function render(){chips();const f=t=>filter==='all'||t.category===filter;const cur=TOOLS.filter(t=>!t.is_mine&&f(t));const mine=TOOLS.filter(t=>t.is_mine&&f(t));document.getElementById('curated').innerHTML=cur.map(row).join('');document.getElementById('mine').innerHTML=mine.map(row).join('');document.getElementById('c-count').textContent=cur.length;document.getElementById('m-count').textContent=mine.length}
+load();
+</script></body></html>

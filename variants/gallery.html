@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>AI Tools Hub · 디자인 갤러리</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0c;--card:#141417;--border:#26262c;--text:#eaeaef;--mute:#8a8a95;--accent:#a78bff;--hot:#ff5d8f;--ok:#5dc66f}
+body{background:var(--bg);color:var(--text);font-family:'Pretendard',sans-serif;min-height:100vh;line-height:1.5}
+.wrap{max-width:1480px;margin:0 auto;padding:48px clamp(16px,3vw,28px) 120px}
+header{margin-bottom:40px}
+h1{font-size:clamp(32px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.sub{color:var(--mute);font-size:15px;max-width:680px}
+.sub b{color:var(--text);font-weight:700}
+
+/* ===== Picker panel ===== */
+.picker{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:clamp(20px,3vw,28px);margin:32px 0 32px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:720px){.picker{grid-template-columns:1fr}}
+.picker h2{font-size:12px;color:var(--mute);font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px}
+.opts{display:flex;flex-wrap:wrap;gap:7px}
+.opt{padding:8px 14px;background:transparent;border:1px solid var(--border);color:var(--mute);border-radius:999px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
+.opt:hover{color:var(--text);border-color:#3a3a44}
+.opt.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.match{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);grid-column:1/-1}
+.match-h{font-size:11.5px;color:var(--mute);font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px}
+.match-list{display:flex;flex-wrap:wrap;gap:8px}
+.match-tag{padding:7px 12px;background:rgba(167,139,255,.12);color:var(--accent);border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;border:none;font-family:inherit}
+.match-tag:hover{background:rgba(167,139,255,.22);transform:translateY(-2px)}
+.match-tag .star{color:#fbbf24;margin-left:4px}
+.match-empty{color:var(--mute);font-size:13px;font-style:italic}
+
+/* ===== Toolbar ===== */
+.toolbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:32px;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:14px}
+.toolbar-l,.toolbar-r{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.toolbar-label{font-size:11px;color:var(--mute);font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-right:4px}
+.search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);padding:8px 12px;border-radius:8px;border:1px solid var(--border)}
+.search input{background:transparent;border:none;color:var(--text);font-family:inherit;font-size:13px;outline:none;width:160px}
+.search input::placeholder{color:var(--mute)}
+.vp-toggle{display:flex;background:rgba(255,255,255,.04);border-radius:8px;border:1px solid var(--border);overflow:hidden}
+.vp-btn{padding:8px 12px;background:transparent;border:none;color:var(--mute);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.vp-btn:hover{color:var(--text)}
+.vp-btn.on{background:var(--accent);color:#fff}
+
+/* ===== Categories filter ===== */
+.cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:36px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+
+/* ===== Section ===== */
+.cat-section{margin-bottom:56px;scroll-margin-top:20px}
+.cat-h{font-size:22px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cat-desc{color:var(--mute);font-size:13px;margin-bottom:20px}
+.cat-count{font-size:12px;color:var(--mute);font-weight:500;background:var(--card);padding:3px 10px;border-radius:999px;border:1px solid var(--border)}
+
+/* ===== Tile grid (responsive by viewport mode) ===== */
+.grid{display:grid;gap:18px}
+.grid.vp-desktop{grid-template-columns:repeat(auto-fill,minmax(360px,1fr))}
+.grid.vp-tablet{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.grid.vp-mobile{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+
+.tile{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .25s;cursor:pointer;position:relative}
+.tile:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 20px 40px -20px rgba(167,139,255,.4)}
+.tile-frame{position:relative;width:100%;overflow:hidden;background:#fff;transition:aspect-ratio .3s}
+.tile-frame iframe{position:absolute;top:0;left:0;border:none;pointer-events:none;background:#fff}
+
+/* viewport sim sizes — iframe is rendered at full size, then scaled to fit tile width */
+.vp-desktop .tile-frame{aspect-ratio:4/3}
+.vp-desktop .tile-frame iframe{width:1280px;height:960px;transform-origin:0 0}
+.vp-tablet .tile-frame{aspect-ratio:3/4}
+.vp-tablet .tile-frame iframe{width:768px;height:1024px;transform-origin:0 0}
+.vp-mobile .tile-frame{aspect-ratio:9/16}
+.vp-mobile .tile-frame iframe{width:375px;height:667px;transform-origin:0 0}
+
+.tile-meta{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.tile-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.tile-name{font-size:15px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.tile-key{font-size:10.5px;color:var(--mute);font-family:'JetBrains Mono',monospace;margin-top:3px;letter-spacing:.05em}
+.tile-tags{display:flex;gap:5px;flex-wrap:wrap}
+.tile-tag{font-size:9.5px;padding:3px 7px;background:#1f1f25;color:var(--mute);border-radius:4px;letter-spacing:.05em;text-transform:uppercase;font-weight:600}
+.tile-tag.fx{background:rgba(167,139,255,.12);color:var(--accent)}
+.tile-tag.rx{background:rgba(93,198,111,.12);color:var(--ok)}
+.tile-actions{position:absolute;top:10px;right:10px;display:flex;gap:6px;opacity:0;transition:opacity .2s;z-index:2}
+.tile:hover .tile-actions{opacity:1}
+.tile-btn{padding:6px 11px;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none}
+.tile-btn:hover{background:var(--accent)}
+.tile.current{border-color:#d4a574}
+.tile.current::before{content:"★ 현재 적용";position:absolute;top:10px;left:10px;background:#d4a574;color:#1c1a17;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;z-index:2;letter-spacing:.05em}
+.tile.hidden{display:none}
+
+/* ===== Modal ===== */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:100;display:none;flex-direction:column}
+.modal.on{display:flex}
+.modal-bar{padding:14px 20px;background:#0a0a0c;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.modal-title{font-weight:700;font-size:15px}
+.modal-actions{display:flex;gap:8px;flex-wrap:wrap}
+.modal-btn{padding:8px 14px;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none}
+.modal-btn:hover{background:#1f1f25}
+.modal-btn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.modal-btn.x{background:transparent;color:var(--mute);font-size:18px;padding:6px 12px}
+.modal-stage{flex:1;display:flex;align-items:center;justify-content:center;background:#1a1a1d;padding:20px;overflow:auto}
+.modal-frame-wrap{background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.5);transition:width .3s,height .3s;max-width:100%;max-height:100%}
+.modal-frame-wrap iframe{width:100%;height:100%;border:none;display:block}
+
+.empty{text-align:center;color:var(--mute);padding:60px 20px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>디자인 갤러리</h1>
+  <p class="sub"><b>21개 시안</b>을 한눈에 비교 · 미리보기 · 분류. 무드/컨셉을 골라 매칭받고, 뷰포트 토글로 반응형까지 확인하세요.</p>
+</header>
+
+<!-- Picker -->
+<section class="picker">
+  <div>
+    <h2>🎨 무드 (배경/색감)</h2>
+    <div class="opts" data-group="mood">
+      <button class="opt" data-val="dark">다크</button>
+      <button class="opt" data-val="light">라이트</button>
+      <button class="opt" data-val="pastel">파스텔</button>
+      <button class="opt" data-val="neon">네온</button>
+      <button class="opt" data-val="paper">종이/베이지</button>
+    </div>
+  </div>
+  <div>
+    <h2>✦ 컨셉 (분위기)</h2>
+    <div class="opts" data-group="vibe">
+      <button class="opt" data-val="minimal">미니멀</button>
+      <button class="opt" data-val="playful">플레이풀</button>
+      <button class="opt" data-val="brutal">브루털</button>
+      <button class="opt" data-val="soft">부드러움</button>
+      <button class="opt" data-val="3d">입체/3D</button>
+      <button class="opt" data-val="editorial">에디토리얼</button>
+      <button class="opt" data-val="kinetic">키네틱</button>
+    </div>
+  </div>
+  <div class="match">
+    <div class="match-h">▸ 매칭되는 시안 <span style="color:var(--mute);font-weight:500;letter-spacing:0;text-transform:none;font-size:11px;margin-left:6px">(★ = 완벽 매치)</span></div>
+    <div class="match-list" id="match-list"><span class="match-empty">위에서 무드와 컨셉을 선택해보세요. 다시 누르면 해제.</span></div>
+  </div>
+</section>
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <div class="toolbar-l">
+    <span class="toolbar-label">📱 뷰포트:</span>
+    <div class="vp-toggle" id="vp-toggle">
+      <button class="vp-btn on" data-vp="desktop">🖥 데스크톱</button>
+      <button class="vp-btn" data-vp="tablet">📱 태블릿</button>
+      <button class="vp-btn" data-vp="mobile">📱 모바일</button>
+    </div>
+  </div>
+  <div class="toolbar-r">
+    <div class="search">
+      <span style="color:var(--mute)">🔍</span>
+      <input type="text" id="search" placeholder="시안 이름 검색...">
+    </div>
+  </div>
+</div>
+
+<!-- Category filters -->
+<div class="cats" id="cats"></div>
+
+<!-- Sections -->
+<div id="sections"></div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-bar">
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-actions">
+      <button class="modal-btn on" data-mvp="desktop" onclick="setModalVp('desktop')">🖥 1280</button>
+      <button class="modal-btn" data-mvp="tablet" onclick="setModalVp('tablet')">📱 768</button>
+      <button class="modal-btn" data-mvp="mobile" onclick="setModalVp('mobile')">📱 375</button>
+      <a class="modal-btn" id="modal-open" target="_blank" rel="noopener">새 탭에서 열기 ↗</a>
+      <button class="modal-btn x" onclick="closeModal()">✕</button>
+    </div>
+  </div>
+  <div class="modal-stage">
+    <div class="modal-frame-wrap" id="modal-wrap"><iframe id="modal-frame" src=""></iframe></div>
+  </div>
+</div>
+
+<script>
+// ===== Variants — each in EXACTLY ONE primary category =====
+const VARIANTS=[
+  // Editorial (5)
+  {f:'../index.html',k:'CURRENT',n:'B-2 Claude 톤 오로라',cat:'editorial',moods:['paper'],vibes:['editorial','soft'],fx:[],current:true},
+  {f:'c-minimal.html',k:'C',n:'일본 미니멀',cat:'editorial',moods:['light'],vibes:['minimal','editorial'],fx:[]},
+  {f:'e-editorial.html',k:'E',n:'에디토리얼 매거진',cat:'editorial',moods:['paper'],vibes:['editorial'],fx:[]},
+  {f:'h-notion.html',k:'H',n:'Notion 도큐먼트',cat:'editorial',moods:['light'],vibes:['minimal','editorial'],fx:[]},
+  {f:'j-scandi.html',k:'J',n:'스칸디나비안',cat:'editorial',moods:['paper'],vibes:['soft','minimal'],fx:[]},
+
+  // Dark Tech (4)
+  {f:'a-darkneon.html',k:'A',n:'다크 네온 글래스',cat:'dark',moods:['dark','neon'],vibes:['minimal'],fx:['Hover']},
+  {f:'f-terminal.html',k:'F',n:'터미널/모노',cat:'dark',moods:['dark'],vibes:['minimal'],fx:[]},
+  {f:'i-cyberpunk.html',k:'I',n:'사이버펑크 글리치',cat:'dark',moods:['dark','neon'],vibes:['playful'],fx:['Glitch']},
+  {f:'s-kinetic.html',k:'S',n:'키네틱 인터랙션 ★NEW',cat:'kinetic',moods:['dark'],vibes:['kinetic','3d'],fx:['Scroll','Hover','Cursor']},
+
+  // 3D / Dimensional (4)
+  {f:'m-tilt3d.html',k:'M',n:'3D 틸트 패럴랙스',cat:'3d',moods:['dark','neon'],vibes:['3d','kinetic'],fx:['Hover','3D']},
+  {f:'n-isometric.html',k:'N',n:'아이소메트릭 큐브',cat:'3d',moods:['dark'],vibes:['3d'],fx:['3D']},
+  {f:'p-clay.html',k:'P',n:'클레이 뉴모피즘',cat:'3d',moods:['pastel','light'],vibes:['soft','3d'],fx:['Hover']},
+  {f:'q-blob.html',k:'Q',n:'블롭 모핑',cat:'3d',moods:['pastel'],vibes:['soft','3d'],fx:['Float']},
+
+  // Playful Pop (4)
+  {f:'g-y2k.html',k:'G',n:'Y2K 메탈릭',cat:'playful',moods:['pastel','neon'],vibes:['playful'],fx:[]},
+  {f:'k-mosaic.html',k:'K',n:'모자이크 핀터레스트',cat:'playful',moods:['pastel'],vibes:['playful','soft'],fx:[]},
+  {f:'o-sticker.html',k:'O',n:'종이 스티커 콜라주',cat:'playful',moods:['paper'],vibes:['playful'],fx:['Hover']},
+  {f:'r-comic.html',k:'R',n:'만화책 패널',cat:'playful',moods:['paper','neon'],vibes:['playful','brutal'],fx:['Hover']},
+
+  // Bold Geometric (2)
+  {f:'b-brutal.html',k:'B',n:'브루털리즘 모노',cat:'bold',moods:['light','neon'],vibes:['brutal'],fx:[]},
+  {f:'l-bauhaus.html',k:'L',n:'Bauhaus 기하학',cat:'bold',moods:['paper'],vibes:['brutal','playful'],fx:[]},
+
+  // Soft Dreamy (1) + already counted P, Q in 3d... move D here
+  {f:'d-glass.html',k:'D',n:'그라디언트 메시',cat:'soft',moods:['pastel'],vibes:['soft'],fx:[]},
+
+  // Responsive Showcase (1)
+  {f:'t-responsive.html',k:'T',n:'반응형 매거진 ★NEW',cat:'responsive',moods:['paper'],vibes:['editorial','minimal'],fx:['Responsive']}
+];
+
+const CATEGORIES=[
+  {id:'kinetic',name:'⚡ Kinetic',desc:'스크롤·호버·커서로 반응. 살아있는 시안.',color:'#a78bff'},
+  {id:'responsive',name:'📐 Responsive',desc:'화면 크기에 따라 레이아웃 자체가 변형.',color:'#5dc66f'},
+  {id:'3d',name:'🎲 3D / Dimensional',desc:'평면이 아닌 입체감. 패럴랙스, 아이소, 모핑.',color:'#06b6d4'},
+  {id:'editorial',name:'📰 Editorial',desc:'잡지·도큐먼트 스타일. 차분하고 읽기 좋음.',color:'#d4a574'},
+  {id:'dark',name:'🌙 Dark Tech',desc:'어두운 배경 + 네온 포인트. 개발자/테크 분위기.',color:'#22d3ee'},
+  {id:'playful',name:'🎨 Playful Pop',desc:'밝고 즐거운 톤. SNS·포트폴리오에 잘 맞음.',color:'#ff5d8f'},
+  {id:'bold',name:'🔲 Bold Geometric',desc:'두꺼운 보더와 도형. 강한 인상.',color:'#fbbf24'},
+  {id:'soft',name:'✨ Soft Dreamy',desc:'부드러운 그라디언트. 꿈결 같은 감성.',color:'#fb7185'}
+];
+
+let curCat='all';
+let curVp='desktop';
+let curSearch='';
+const picker={mood:null,vibe:null};
+
+function renderCats(){
+  const root=document.getElementById('cats');
+  root.innerHTML=`<button class="opt ${curCat==='all'?'on':''}" data-cat="all">전체 <span style="opacity:.6;font-size:11px;margin-left:4px">${VARIANTS.length}</span></button>`+
+    CATEGORIES.map(c=>{
+      const n=VARIANTS.filter(v=>v.cat===c.id).length;
+      return n?`<button class="opt ${curCat===c.id?'on':''}" data-cat="${c.id}">${c.name} <span style="opacity:.6;font-size:11px;margin-left:4px">${n}</span></button>`:''
+    }).join('');
+  root.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{curCat=b.dataset.cat;renderCats();renderSections()});
+}
+
+function renderSections(){
+  const root=document.getElementById('sections');
+  const cats=curCat==='all'?CATEGORIES:CATEGORIES.filter(c=>c.id===curCat);
+  let html='';
+  let totalVisible=0;
+  cats.forEach(c=>{
+    const items=VARIANTS.filter(v=>v.cat===c.id&&matchSearch(v));
+    if(!items.length)return;
+    totalVisible+=items.length;
+    html+=`<section class="cat-section">
+      <div class="cat-h"><span style="color:${c.color}">${c.name}</span><span class="cat-count">${items.length}</span></div>
+      <div class="cat-desc">${c.desc}</div>
+      <div class="grid vp-${curVp}">${items.map(tile).join('')}</div>
+    </section>`;
+  });
+  if(!totalVisible)html=`<div class="empty">검색 결과가 없어요. 다른 키워드를 시도해보세요.</div>`;
+  root.innerHTML=html;
+  scaleFrames();
+  bindTiles();
+}
+
+function matchSearch(v){
+  if(!curSearch)return true;
+  const q=curSearch.toLowerCase();
+  return v.n.toLowerCase().includes(q)||v.k.toLowerCase().includes(q)||v.cat.includes(q);
+}
+
+function tile(v){
+  const fxBadges=v.fx.map(f=>`<span class="tile-tag fx">${f}</span>`).join('');
+  const rxBadge=v.cat==='responsive'?`<span class="tile-tag rx">Responsive</span>`:'';
+  return `<div class="tile ${v.current?'current':''}" data-f="${v.f}" data-n="${v.n}">
+    <div class="tile-actions">
+      <a class="tile-btn" href="${v.f}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ 새탭</a>
+    </div>
+    <div class="tile-frame"><iframe src="${v.f}" loading="lazy"></iframe></div>
+    <div class="tile-meta">
+      <div class="tile-top">
+        <div><div class="tile-name">${v.n}</div><div class="tile-key">${v.k}</div></div>
+      </div>
+      <div class="tile-tags">${rxBadge}${fxBadges}${v.vibes.slice(0,2).map(x=>`<span class="tile-tag">${x}</span>`).join('')}</div>
+    </div>
+  </div>`;
+}
+
+function scaleFrames(){
+  // scale iframe to fit tile width based on viewport mode
+  document.querySelectorAll('.tile').forEach(t=>{
+    const frame=t.querySelector('.tile-frame');
+    const iframe=t.querySelector('iframe');
+    if(!frame||!iframe)return;
+    const w=frame.clientWidth;
+    const baseW=curVp==='desktop'?1280:curVp==='tablet'?768:375;
+    const scale=w/baseW;
+    iframe.style.transform=`scale(${scale})`;
+  });
+}
+window.addEventListener('resize',scaleFrames);
+
+function bindTiles(){
+  document.querySelectorAll('.tile').forEach(t=>{
+    t.onclick=()=>openModal(t.dataset.f,t.dataset.n);
+  });
+}
+
+let modalVp='desktop';
+const VP_SIZES={desktop:[1280,800],tablet:[768,1024],mobile:[375,667]};
+function openModal(f,n){
+  document.getElementById('modal-frame').src=f;
+  document.getElementById('modal-title').textContent=n;
+  document.getElementById('modal-open').href=f;
+  setModalVp('desktop');
+  document.getElementById('modal').classList.add('on');
+}
+function setModalVp(v){
+  modalVp=v;
+  const[w,h]=VP_SIZES[v];
+  const wrap=document.getElementById('modal-wrap');
+  // calculate available space
+  const stage=document.querySelector('.modal-stage');
+  const maxW=stage.clientWidth-40;
+  const maxH=stage.clientHeight-40;
+  const sc=Math.min(maxW/w,maxH/h,1);
+  wrap.style.width=(w*sc)+'px';
+  wrap.style.height=(h*sc)+'px';
+  document.querySelectorAll('.modal-btn[data-mvp]').forEach(b=>b.classList.toggle('on',b.dataset.mvp===v));
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('on');
+  document.getElementById('modal-frame').src='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+// viewport toggle
+document.querySelectorAll('#vp-toggle .vp-btn').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('#vp-toggle .vp-btn').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    curVp=b.dataset.vp;
+    renderSections();
+  };
+});
+
+// search
+document.getElementById('search').oninput=e=>{
+  curSearch=e.target.value.trim();
+  renderSections();
+};
+
+// picker
+document.querySelectorAll('.picker .opts .opt').forEach(b=>{
+  const group=b.parentElement.dataset.group;
+  if(!group)return;
+  b.onclick=()=>{
+    if(picker[group]===b.dataset.val){
+      picker[group]=null;
+      b.classList.remove('on');
+    }else{
+      b.parentElement.querySelectorAll('.opt').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      picker[group]=b.dataset.val;
+    }
+    renderMatch();
+  };
+});
+
+function renderMatch(){
+  const list=document.getElementById('match-list');
+  if(!picker.mood&&!picker.vibe){
+    list.innerHTML='<span class="match-empty">위에서 무드와 컨셉을 선택해보세요. 다시 누르면 해제.</span>';
+    return;
+  }
+  const matches=VARIANTS.map(v=>{
+    let score=0;
+    let perfect=true;
+    if(picker.mood){if(v.moods.includes(picker.mood))score+=2;else perfect=false}
+    if(picker.vibe){if(v.vibes.includes(picker.vibe))score+=2;else perfect=false}
+    return {v,score,perfect:perfect&&score>=2};
+  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,8);
+  if(!matches.length){
+    list.innerHTML='<span class="match-empty">조건에 딱 맞는 시안이 없어요. 다른 조합을 시도해보세요.</span>';
+    return;
+  }
+  list.innerHTML=matches.map(({v,perfect})=>`<button class="match-tag" onclick="openModal('${v.f}','${v.n.replace(/'/g,"\\'")}')">${v.k} · ${v.n}${perfect?'<span class="star">★</span>':''}</button>`).join('');
+}
+
+renderCats();
+renderSections();
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>L · Bauhaus 기하학</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f1ede2;--ink:#0a0a0a;--red:#e63946;--blue:#1d3fae;--yellow:#ffd60a;--paper:#fff}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard','Archivo',sans-serif;min-height:100vh}
+.wrap{max-width:1300px;margin:0 auto;padding:48px 32px 120px;position:relative}
+.bar{display:flex;justify-content:space-between;font-family:'Archivo',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border-bottom:3px solid var(--ink);padding-bottom:14px;margin-bottom:48px}
+.hero{display:grid;grid-template-columns:2fr 1fr;gap:48px;align-items:center;margin-bottom:64px}
+.shapes{position:relative;height:280px}
+.shape{position:absolute;border:3px solid var(--ink)}
+.s1{width:160px;height:160px;background:var(--red);border-radius:50%;left:0;top:20px}
+.s2{width:140px;height:140px;background:var(--yellow);right:60px;top:0}
+.s3{width:0;height:0;border-left:90px solid transparent;border-right:90px solid transparent;border-bottom:160px solid var(--blue);border-top:none;left:120px;top:80px;background:none}
+.s3::after{content:"";position:absolute;left:-90px;top:0;border-left:90px solid transparent;border-right:90px solid transparent;border-bottom:160px solid transparent;border-top:none}
+h1{font-family:'Archivo Black',sans-serif;font-size:clamp(48px,8vw,96px);font-weight:900;line-height:.9;letter-spacing:-.04em;text-transform:uppercase}
+h1 .red{color:var(--red)}h1 .blue{color:var(--blue)}
+.sub{margin-top:20px;font-size:16px;font-weight:500;line-height:1.6;max-width:520px}
+.controls{display:flex;gap:0;margin:32px 0 24px;flex-wrap:wrap}
+.chip{padding:12px 20px;background:var(--paper);border:3px solid var(--ink);border-right:none;color:var(--ink);font-family:'Archivo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.1em;transition:none}
+.chip:last-child{border-right:3px solid var(--ink)}
+.chip:hover{background:var(--yellow)}
+.chip.on{background:var(--ink);color:var(--yellow)}
+.chip .n{margin-left:6px;font-weight:400;opacity:.7}
+.section-h{font-family:'Archivo Black',sans-serif;font-size:32px;margin:56px 0 20px;letter-spacing:-.02em;text-transform:uppercase;display:flex;align-items:center;gap:14px}
+.section-h::after{content:"";flex:1;height:8px;background:var(--ink)}
+.section-h .badge{font-size:14px;background:var(--red);color:var(--paper);padding:4px 12px;font-family:'Archivo',sans-serif;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:0;border:3px solid var(--ink);border-bottom:none;border-right:none}
+.card{position:relative;padding:24px;background:var(--paper);border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);text-decoration:none;color:inherit;transition:background .15s;display:block;overflow:hidden}
+.card:hover{background:var(--yellow)}
+.card::before{content:"";position:absolute;width:60px;height:60px;border-radius:50%;background:var(--red);top:-30px;right:-30px;border:3px solid var(--ink)}
+.card.cat-research::before{background:var(--blue)}
+.card.cat-coding::before{background:var(--yellow)}
+.card.cat-image::before{background:var(--red);transform:rotate(45deg);border-radius:0}
+.card.cat-video::before{background:var(--blue);border-radius:0;width:80px;height:30px}
+.card.cat-audio::before{background:var(--yellow);border-radius:0;width:30px;height:80px}
+.card.cat-design::before{background:var(--red);border-radius:0;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.card.cat-productivity::before{background:var(--blue);border-radius:50% 50% 0 0;height:30px;width:80px;top:-15px;right:0}
+.row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px;position:relative;z-index:1}
+.nm{font-family:'Archivo Black',sans-serif;font-size:22px;line-height:1.05;letter-spacing:-.02em;text-transform:uppercase}
+.by{font-family:'Archivo',sans-serif;font-size:11px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.1em;margin-top:6px;opacity:.6}
+.free{font-size:10px;font-weight:700;padding:3px 8px;background:var(--ink);color:var(--paper);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.desc{font-size:14px;line-height:1.55;margin-bottom:14px;font-weight:500;position:relative;z-index:1}
+.note{font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;background:var(--ink);color:var(--yellow);padding:10px 12px;margin-bottom:14px;letter-spacing:.02em}
+.note::before{content:"→ "}
+.tags{display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-family:'Archivo',sans-serif;font-size:10.5px;font-weight:700;padding:3px 8px;border:2px solid var(--ink);text-transform:uppercase;letter-spacing:.05em}
+.mine{background:var(--yellow)}
+footer{margin-top:80px;padding:24px 0;border-top:3px solid var(--ink);font-family:'Archivo',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;display:flex;justify-content:space-between}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.shapes{height:200px;order:-1}}
+</style></head><body>
+<main class="wrap">
+<div class="bar"><span>● ai-tools-hub / 2026</span><span>commme · curated</span></div>
+<section class="hero">
+<div>
+<h1><span class="red">매일</span> 쓰는<br><span class="blue">AI 도구</span></h1>
+<p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들. 과장 없이, 기능 그대로.</p>
+</div>
+<div class="shapes"><div class="shape s1"></div><div class="shape s2"></div><div class="shape s3"></div></div>
+</section>
+<div class="controls" id="chips"></div>
+<div class="section-h">Curated <span class="badge" id="c-count"></span></div>
+<div class="grid" id="curated"></div>
+<div class="section-h">Made by Me <span class="badge" id="m-count"></span></div>
+<div class="grid" id="mine"></div>
+<footer><span>© commme 2026</span><span>Form Follows Function</span></footer>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let TOOLS=[],CATS=[],filter='all';
+async function load(){const[t,c]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);TOOLS=t.tools;CATS=c.categories;render()}
+function chips(){const all=[{id:'all',name:'ALL'},...CATS.map(c=>({id:c.id,name:c.name}))];const counts={all:TOOLS.length};CATS.forEach(c=>counts[c.id]=TOOLS.filter(t=>t.category===c.id).length);document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===filter?'on':''}" data-id="${c.id}">${c.name}<span class="n">${counts[c.id]||0}</span></button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.id;render()})}
+function card(t){return `<a class="card cat-${t.category} ${t.is_mine?'mine':''}" href="${esc(t.url)}" target="_blank" rel="noopener"><div class="row"><div><div class="nm">${esc(t.name)}</div><div class="by">${esc(t.by)}</div></div><span class="free">${esc(t.free)}</span></div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}<div class="tags">${t.tags.slice(0,4).map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div></a>`}
+function render(){chips();const f=t=>filter==='all'||t.category===filter;const cur=TOOLS.filter(t=>!t.is_mine&&f(t));const mine=TOOLS.filter(t=>t.is_mine&&f(t));document.getElementById('curated').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mine.map(card).join('');document.getElementById('c-count').textContent=cur.length;document.getElementById('m-count').textContent=mine.length}
+load();
+</script></body></html>

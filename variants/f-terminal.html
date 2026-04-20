@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>F · 터미널</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--bg:#0d1117;--panel:#161b22;--border:#30363d;--text:#c9d1d9;--mute:#7d8590;--green:#3fb950;--cyan:#58a6ff;--yellow:#d29922;--magenta:#bc8cff}
+  html,body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono','Pretendard',monospace;min-height:100vh;font-size:14px;line-height:1.55}
+  body::before{content:"";position:fixed;inset:0;background:linear-gradient(rgba(63,185,80,.025) 50%,transparent 50%);background-size:100% 4px;pointer-events:none;z-index:0;animation:scan 8s linear infinite}
+  @keyframes scan{0%{background-position:0 0}100%{background-position:0 100%}}
+  .wrap{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:32px 24px 80px}
+  .topbar{padding:8px 14px;border:1px solid var(--border);border-radius:6px 6px 0 0;background:var(--panel);display:flex;gap:8px;align-items:center;color:var(--mute);font-size:12px}
+  .dot{width:11px;height:11px;border-radius:50%}
+  .d1{background:#ff5f56}.d2{background:#ffbd2e}.d3{background:#27c93f}
+  .topbar .path{margin-left:14px}
+  .panel{border:1px solid var(--border);border-top:none;background:var(--panel);padding:32px 28px;border-radius:0 0 6px 6px;margin-bottom:24px}
+  .prompt{color:var(--green)}
+  .prompt::before{content:'➜ '}
+  .ascii{color:var(--green);font-size:11px;line-height:1.2;white-space:pre;margin:24px 0;letter-spacing:0;overflow-x:auto}
+  h1{font-size:28px;font-weight:700;color:var(--text);margin:18px 0 8px;letter-spacing:-.01em}
+  h1 .cur{display:inline-block;width:12px;height:22px;background:var(--green);vertical-align:middle;margin-left:4px;animation:blink 1s steps(2) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .sub{color:var(--mute);max-width:680px}
+  .sub::before{content:'# ';color:var(--green)}
+  .controls{display:flex;gap:0;margin:24px 0 20px;flex-wrap:wrap;border:1px solid var(--border);border-radius:6px;overflow:hidden;background:var(--panel)}
+  .chip{padding:9px 16px;border:none;border-right:1px solid var(--border);background:transparent;color:var(--mute);font-size:12.5px;cursor:pointer;font-family:inherit;transition:all .15s}
+  .chip:last-child{border-right:none}
+  .chip:hover{background:rgba(63,185,80,.08);color:var(--text)}
+  .chip.on{background:var(--green);color:var(--bg);font-weight:700}
+  .chip .n{opacity:.7;margin-left:5px;font-size:11px}
+  .section-h{margin:36px 0 16px;color:var(--cyan);font-size:13px;display:flex;align-items:center;gap:10px}
+  .section-h::before{content:'╭─';color:var(--border)}
+  .section-h::after{content:"";flex:1;border-bottom:1px dashed var(--border);margin-left:6px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+  .card{padding:18px;background:var(--panel);border:1px solid var(--border);border-radius:6px;text-decoration:none;color:inherit;transition:all .15s;display:block;position:relative}
+  .card:hover{border-color:var(--green);box-shadow:0 0 0 1px var(--green),0 4px 16px rgba(63,185,80,.15);transform:translateY(-2px)}
+  .head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px}
+  .nm{color:var(--text);font-size:15.5px;font-weight:700}
+  .nm::before{content:'→ ';color:var(--green)}
+  .by{color:var(--mute);font-size:11px;margin-top:2px}
+  .by::before{content:'@'}
+  .free{font-size:10.5px;color:var(--yellow);padding:2px 7px;border:1px solid var(--yellow);border-radius:3px;white-space:nowrap}
+  .desc{color:#a0a8b3;font-size:13px;margin-bottom:12px}
+  .desc::before{content:'│ ';color:var(--border)}
+  .note{font-size:12.5px;color:var(--cyan);background:rgba(88,166,255,.08);border-left:2px solid var(--cyan);padding:8px 11px;margin-bottom:12px;border-radius:0 4px 4px 0}
+  .note::before{content:'// ';opacity:.6}
+  .tags{display:flex;gap:5px;flex-wrap:wrap}
+  .tag{font-size:10.5px;color:var(--magenta);padding:2px 7px;background:rgba(188,140,255,.08);border-radius:3px}
+  .tag::before{content:'#'}
+  .mine .nm::before{content:'★ ';color:var(--yellow)}
+  .mine{border-color:rgba(210,153,34,.4)}
+  footer{margin-top:48px;color:var(--mute);font-size:12px;text-align:center}
+  footer::before{content:'$ '}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="topbar"><span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span><span class="path">~ / commme / ai-tools-hub — zsh</span></div>
+  <div class="panel">
+    <div class="prompt">cat ./README.md</div>
+<pre class="ascii">  █████╗ ██╗    ████████╗ ██████╗  ██████╗ ██╗     ███████╗
+ ██╔══██╗██║    ╚══██╔══╝██╔═══██╗██╔═══██╗██║     ██╔════╝
+ ███████║██║       ██║   ██║   ██║██║   ██║██║     ███████╗
+ ██╔══██║██║       ██║   ██║   ██║██║   ██║██║     ╚════██║
+ ██║  ██║██║       ██║   ╚██████╔╝╚██████╔╝███████╗███████║
+ ╚═╝  ╚═╝╚═╝       ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝</pre>
+    <h1>매일 쓰는 AI 도구 모음<span class="cur"></span></h1>
+    <p class="sub">한국에서 실제로 많이 쓰는 도구와 직접 만든 작은 도구들. 과장 없이, 기능 그대로.</p>
+    <div class="controls" id="chips"></div>
+    <div class="section-h">curated/ <span id="c-count" style="color:var(--mute)"></span></div>
+    <div class="grid" id="curated"></div>
+    <div class="section-h">made-by-me/ <span id="m-count" style="color:var(--mute)"></span></div>
+    <div class="grid" id="mine"></div>
+    <footer>commme · 2026 · built with claude code</footer>
+  </div>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let TOOLS=[],CATS=[],filter='all';
+async function load(){
+  const [t,c]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);
+  TOOLS=t.tools;CATS=c.categories;render();
+}
+function chips(){
+  const all=[{id:'all',name:'all'},...CATS.map(c=>({id:c.id,name:c.id}))];
+  const counts={all:TOOLS.length};CATS.forEach(c=>counts[c.id]=TOOLS.filter(t=>t.category===c.id).length);
+  document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===filter?'on':''}" data-id="${c.id}">--${c.name}<span class="n">${counts[c.id]||0}</span></button>`).join('');
+  document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.id;render()});
+}
+function card(t){
+  return `<a class="card ${t.is_mine?'mine':''}" href="${esc(t.url)}" target="_blank" rel="noopener">
+    <div class="head"><div><div class="nm">${esc(t.name)}</div><div class="by">${esc(t.by)}</div></div><span class="free">${esc(t.free)}</span></div>
+    <div class="desc">${esc(t.description)}</div>
+    ${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}
+    <div class="tags">${t.tags.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div>
+  </a>`;
+}
+function render(){
+  chips();
+  const f=t=>filter==='all'||t.category===filter;
+  const cur=TOOLS.filter(t=>!t.is_mine&&f(t));
+  const mine=TOOLS.filter(t=>t.is_mine&&f(t));
+  document.getElementById('curated').innerHTML=cur.map(card).join('');
+  document.getElementById('mine').innerHTML=mine.map(card).join('');
+  document.getElementById('c-count').textContent=`(${cur.length})`;
+  document.getElementById('m-count').textContent=`(${mine.length})`;
+}
+load();
+</script>
+</body>
+</html>

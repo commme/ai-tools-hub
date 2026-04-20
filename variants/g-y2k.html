@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>G · Y2K 메탈릭</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#c0e8ff 0%,#ffd6f5 50%,#d0c0ff 100%);min-height:100vh;font-family:'Pretendard',sans-serif;color:#1a0033}
+body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradient(45deg,transparent 0 20px,rgba(255,255,255,.04) 20px 40px);pointer-events:none}
+.wrap{max-width:1280px;margin:0 auto;padding:48px 28px 120px;position:relative}
+.hero{padding:32px;background:linear-gradient(135deg,#fff,#e8e0ff);border:3px solid #1a0033;box-shadow:8px 8px 0 #ff3ec5,16px 16px 0 #00d4ff;border-radius:0;margin-bottom:48px;position:relative}
+.hero::before{content:"★ NEW ★";position:absolute;top:-16px;right:24px;background:#ffeb3b;border:2px solid #1a0033;padding:4px 16px;font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;transform:rotate(8deg)}
+.eyebrow{font-family:'VT323',monospace;font-size:22px;color:#ff3ec5;margin-bottom:12px}
+h1{font-family:'Orbitron',sans-serif;font-size:clamp(40px,7vw,80px);font-weight:900;line-height:1;letter-spacing:-.02em;background:linear-gradient(180deg,#00d4ff 0%,#ff3ec5 50%,#ffeb3b 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;margin-bottom:16px;text-transform:uppercase}
+.sub{font-family:'VT323',monospace;font-size:20px;color:#1a0033}
+.controls{display:flex;gap:8px;margin:32px 0 24px;flex-wrap:wrap}
+.chip{padding:10px 18px;background:linear-gradient(180deg,#fff,#d0d0ff);border:2px solid #1a0033;color:#1a0033;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-transform:uppercase;box-shadow:3px 3px 0 #1a0033}
+.chip:hover{background:linear-gradient(180deg,#ffeb3b,#ff3ec5)}
+.chip.on{background:linear-gradient(180deg,#ff3ec5,#1a0033);color:#ffeb3b}
+.section-h{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;margin:48px 0 16px;text-transform:uppercase;color:#1a0033;border-top:3px dashed #1a0033;padding-top:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
+.card{padding:20px;background:linear-gradient(135deg,#fff,#f0e8ff);border:3px solid #1a0033;text-decoration:none;color:#1a0033;display:block;box-shadow:5px 5px 0 #ff3ec5;transition:all .15s}
+.card:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 #00d4ff}
+.row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+.nm{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:-.01em}
+.by{font-family:'VT323',monospace;font-size:15px;color:#7d3aa8;margin-top:4px}
+.free{font-family:'VT323',monospace;font-size:14px;background:#ffeb3b;border:2px solid #1a0033;padding:2px 8px;white-space:nowrap}
+.desc{font-size:13.5px;line-height:1.55;margin-bottom:12px;font-weight:500}
+.note{font-family:'VT323',monospace;font-size:17px;color:#ff3ec5;background:#1a0033;padding:8px 12px;margin-bottom:12px}
+.note::before{content:"▸ "}
+.tags{display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-family:'VT323',monospace;font-size:14px;padding:1px 8px;background:#00d4ff;border:2px solid #1a0033;color:#1a0033}
+.mine{background:linear-gradient(135deg,#ffeb3b,#ff9ec5)}
+footer{margin-top:64px;text-align:center;font-family:'VT323',monospace;font-size:18px;color:#1a0033}
+</style></head><body>
+<main class="wrap">
+<section class="hero">
+<div class="eyebrow">>>> AI.TOOLS // 2026 // ver.1.0 <<<</div>
+<h1>매일 쓰는<br>AI 도구</h1>
+<p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들. 과장 없이, 기능 그대로.</p>
+</section>
+<div class="controls" id="chips"></div>
+<div class="section-h">★ Curated Tools <span id="c-count"></span></div>
+<div class="grid" id="curated"></div>
+<div class="section-h">★ Made by Me <span id="m-count"></span></div>
+<div class="grid" id="mine"></div>
+<footer>♥ commme · 2026 ♥</footer>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let TOOLS=[],CATS=[],filter='all';
+async function load(){const[t,c]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);TOOLS=t.tools;CATS=c.categories;render()}
+function chips(){const all=[{id:'all',name:'ALL'},...CATS.map(c=>({id:c.id,name:c.name}))];const counts={all:TOOLS.length};CATS.forEach(c=>counts[c.id]=TOOLS.filter(t=>t.category===c.id).length);document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===filter?'on':''}" data-id="${c.id}">${c.name} ${counts[c.id]||0}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.id;render()})}
+function card(t){return `<a class="card ${t.is_mine?'mine':''}" href="${esc(t.url)}" target="_blank" rel="noopener"><div class="row"><div><div class="nm">${esc(t.name)}</div><div class="by">@${esc(t.by)}</div></div><span class="free">${esc(t.free)}</span></div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}<div class="tags">${t.tags.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div></a>`}
+function render(){chips();const f=t=>filter==='all'||t.category===filter;const cur=TOOLS.filter(t=>!t.is_mine&&f(t));const mine=TOOLS.filter(t=>t.is_mine&&f(t));document.getElementById('curated').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mine.map(card).join('');document.getElementById('c-count').textContent=`[${cur.length}]`;document.getElementById('m-count').textContent=`[${mine.length}]`}
+load();
+</script></body></html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>B · 브루털리즘 모노</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--bg:#fafaf7;--ink:#0a0a0a;--accent:#ddff00;--mute:#666}
+  html,body{background:var(--bg);color:var(--ink);font-family:'Pretendard','Space Grotesk',sans-serif;min-height:100vh}
+  .wrap{max-width:1320px;margin:0 auto;padding:48px 28px 120px}
+  header{border-bottom:3px solid var(--ink);padding-bottom:32px;margin-bottom:40px}
+  .topbar{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:32px}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(56px,10vw,140px);font-weight:700;line-height:.92;letter-spacing:-.04em}
+  h1 .hl{background:var(--accent);padding:0 8px;display:inline-block;transform:rotate(-1deg)}
+  .sub{margin-top:24px;font-size:18px;max-width:600px;line-height:1.5;font-weight:500}
+  .controls{display:flex;gap:0;margin:48px 0 32px;flex-wrap:wrap;border:3px solid var(--ink);background:#fff}
+  .chip{padding:14px 22px;border-right:3px solid var(--ink);background:#fff;color:var(--ink);font-size:13px;font-weight:700;cursor:pointer;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.05em;transition:none}
+  .chip:last-child{border-right:none}
+  .chip:hover{background:var(--ink);color:#fff}
+  .chip.on{background:var(--accent);color:var(--ink)}
+  .chip .n{margin-left:8px;opacity:.5}
+  .section-h{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin:48px 0 20px;padding:8px 0;border-bottom:2px solid var(--ink)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:0;border-left:3px solid var(--ink);border-top:3px solid var(--ink)}
+  .card{position:relative;padding:24px;background:#fff;border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);text-decoration:none;color:inherit;transition:transform .12s,box-shadow .12s;display:block}
+  .card:hover{transform:translate(-4px,-4px);box-shadow:8px 8px 0 var(--ink);background:var(--accent);z-index:2}
+  .row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+  .nm{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;line-height:1.1;letter-spacing:-.02em}
+  .by{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+  .free{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;padding:4px 8px;background:var(--ink);color:var(--accent);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+  .desc{font-size:14px;line-height:1.55;margin-bottom:14px;font-weight:500}
+  .note{font-family:'IBM Plex Mono',monospace;font-size:12px;padding:10px 12px;background:var(--ink);color:#fff;margin-bottom:14px}
+  .note::before{content:'NOTE → ';font-weight:700;opacity:.5}
+  .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:3px 7px;border:1.5px solid var(--ink);font-weight:500}
+  .mine{background:#f0ffd0}
+  .mine:hover{background:var(--accent)}
+  footer{margin-top:80px;padding:24px 0;border-top:3px solid var(--ink);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="topbar"><span>// AI TOOLS · 2026</span><span>commme.collection</span></div>
+    <h1>매일 쓰는<br><span class="hl">AI 도구</span> 모음</h1>
+    <p class="sub">한국에서 실제로 많이 쓰는 AI 도구 + 직접 만든 것들. 과장 없이, 기능 그대로.</p>
+  </header>
+  <div class="controls" id="chips"></div>
+  <div class="section-h">큐레이션 한 도구 <span id="c-count"></span></div>
+  <div class="grid" id="curated"></div>
+  <div class="section-h" style="margin-top:64px">내가 만든 도구 <span id="m-count"></span></div>
+  <div class="grid" id="mine"></div>
+  <footer><span>© 2026 commme</span><span>BUILT WITH CLAUDE CODE</span></footer>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let TOOLS=[],CATS=[],filter='all';
+async function load(){
+  const [t,c]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);
+  TOOLS=t.tools;CATS=c.categories;render();
+}
+function chips(){
+  const all=[{id:'all',name:'ALL',emoji:''},...CATS];
+  const counts={all:TOOLS.length};CATS.forEach(c=>counts[c.id]=TOOLS.filter(t=>t.category===c.id).length);
+  document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===filter?'on':''}" data-id="${c.id}">${c.name}<span class="n">${counts[c.id]||0}</span></button>`).join('');
+  document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{filter=b.dataset.id;render()});
+}
+function card(t){
+  return `<a class="card ${t.is_mine?'mine':''}" href="${esc(t.url)}" target="_blank" rel="noopener">
+    <div class="row"><div><div class="nm">${esc(t.name)}</div><div class="by">${esc(t.by)}</div></div><span class="free">${esc(t.free)}</span></div>
+    <div class="desc">${esc(t.description)}</div>
+    ${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}
+    <div class="tags">${t.tags.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div>
+  </a>`;
+}
+function render(){
+  chips();
+  const f=t=>filter==='all'||t.category===filter;
+  const cur=TOOLS.filter(t=>!t.is_mine&&f(t));
+  const mine=TOOLS.filter(t=>t.is_mine&&f(t));
+  document.getElementById('curated').innerHTML=cur.map(card).join('');
+  document.getElementById('mine').innerHTML=mine.map(card).join('');
+  document.getElementById('c-count').textContent=`[${cur.length}]`;
+  document.getElementById('m-count').textContent=`[${mine.length}]`;
+}
+load();
+</script>
+</body>
+</html>
