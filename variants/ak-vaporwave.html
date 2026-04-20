@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>AK · Vaporwave</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>*{margin:0;padding:0;box-sizing:border-box}@import url('https://fonts.googleapis.com/css2?family=VT323&family=Major+Mono+Display&display=swap');
+body{background:linear-gradient(180deg,#3a0ca3 0%,#f72585 50%,#7209b7 100%);color:#fff;font-family:'Pretendard',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(0,0,0,.1) 2px,rgba(0,0,0,.1) 4px);pointer-events:none;z-index:1}
+.wrap{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:60px 24px 120px}
+header{text-align:center;margin-bottom:48px}
+.kicker{font-family:'Major Mono Display',monospace;color:#00ffff;text-shadow:2px 2px #ff00ff;letter-spacing:.3em;font-size:14px;margin-bottom:20px}
+h1{font-family:'Major Mono Display',monospace;font-size:clamp(48px,10vw,128px);font-weight:400;line-height:1;text-shadow:4px 4px #ff00ff,-4px -4px #00ffff}
+.sub{font-family:'VT323',monospace;font-size:24px;margin-top:24px;color:#ffe4ff}
+.chips{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:32px 0}
+.chip{padding:6px 16px;background:rgba(255,0,255,.3);border:2px solid #ff00ff;color:#fff;font-family:'VT323',monospace;font-size:18px;cursor:pointer;text-shadow:1px 1px #00ffff}
+.chip.on{background:#00ffff;color:#3a0ca3;border-color:#00ffff;text-shadow:none}
+.section{font-family:'Major Mono Display',monospace;font-size:18px;text-align:center;color:#00ffff;text-shadow:2px 2px #ff00ff;letter-spacing:.2em;margin:48px 0 24px;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{background:rgba(0,0,0,.3);border:2px solid #00ffff;padding:18px;text-decoration:none;color:#fff;display:block;box-shadow:6px 6px 0 #ff00ff;transition:transform .15s}
+.card:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 #ff00ff}
+.row{display:flex;justify-content:space-between;margin-bottom:8px}
+.nm{font-family:'Major Mono Display',monospace;font-size:20px;color:#00ffff;text-shadow:1px 1px #ff00ff;text-transform:uppercase}
+.by{font-family:'VT323',monospace;font-size:14px;color:#ff00ff;margin-bottom:10px}
+.desc{font-family:'VT323',monospace;font-size:18px;line-height:1.3;color:#ffe4ff}
+.free{font-family:'VT323',monospace;font-size:14px;padding:2px 8px;background:#ff00ff;color:#fff}
+.note{font-family:'VT323',monospace;font-size:16px;color:#00ffff;margin-top:8px;border-left:3px solid #00ffff;padding-left:8px}</style></head><body>
+<div class="wrap"><header><div class="kicker">▲ A E S T H E T I C ▲</div><h1>A I 도구</h1><p class="sub">~ 한국에서 매일 쓰는 미래 도구 ~</p></header><div class="chips" id="chips"></div><div class="section">◆ Curated · <span id="cn"></span> ◆</div><div class="grid" id="cur"></div><div class="section">◆ Mine · <span id="mn"></span> ◆</div><div class="grid" id="mine"></div></div>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'All'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function card(t){return `<a class="card" href="${esc(t.url)}" target="_blank"><div class="row"><div class="nm">${esc(t.name)}</div><span class="free">${esc(t.free)}</span></div><div class="by">${esc(t.by)}</div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}</a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mn.map(card).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script>
+</body></html>

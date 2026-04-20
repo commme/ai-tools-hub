@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>AN · Hand Sketch</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>*{margin:0;padding:0;box-sizing:border-box}@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Kalam:wght@400;700&display=swap');
+body{background:#fffef8;color:#2b2b2b;font-family:'Kalam','Pretendard',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:repeating-linear-gradient(0deg,transparent 0,transparent 32px,#e0d8c8 32px,#e0d8c8 33px);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:60px 32px 120px}
+header{margin-bottom:48px}
+h1{font-family:'Caveat',cursive;font-size:clamp(72px,12vw,160px);font-weight:700;line-height:.95;color:#2b2b2b;transform:rotate(-1deg)}
+h1 u{text-decoration:wavy underline #e94e3b;text-decoration-thickness:4px}
+.sub{font-family:'Caveat',cursive;margin-top:12px;font-size:28px;max-width:540px;color:#555;transform:rotate(.5deg)}
+.chips{display:flex;gap:12px;flex-wrap:wrap;margin:32px 0}
+.chip{padding:6px 16px;background:transparent;border:2px solid #2b2b2b;color:#2b2b2b;font-family:'Kalam',cursive;font-size:16px;font-weight:700;cursor:pointer;border-radius:99px;transform:rotate(-1deg)}
+.chip:nth-child(2n){transform:rotate(1deg)}
+.chip.on{background:#ffd60a;transform:rotate(-2deg) scale(1.05)}
+.section{font-family:'Caveat',cursive;font-size:32px;font-weight:700;margin:48px 0 20px;color:#e94e3b;transform:rotate(-1deg);border-bottom:3px dashed #2b2b2b;padding-bottom:6px;display:inline-block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.card{background:#fff;border:2px solid #2b2b2b;border-radius:6px;padding:20px;text-decoration:none;color:#2b2b2b;display:block;transform:rotate(-.5deg);transition:transform .2s;box-shadow:4px 4px 0 #2b2b2b}
+.card:nth-child(2n){transform:rotate(.8deg)}
+.card:nth-child(3n){transform:rotate(-1.2deg)}
+.card:hover{transform:rotate(0) scale(1.03)}
+.row{display:flex;justify-content:space-between;align-items:start;margin-bottom:6px}
+.nm{font-family:'Caveat',cursive;font-size:32px;font-weight:700;line-height:1}
+.by{font-size:14px;color:#888;margin-bottom:10px;font-style:italic}
+.desc{font-size:15px;line-height:1.4}
+.free{font-family:'Caveat',cursive;font-size:16px;padding:2px 10px;background:#ffd60a;color:#2b2b2b;border:2px solid #2b2b2b;border-radius:99px;font-weight:700;transform:rotate(3deg);display:inline-block;white-space:nowrap}
+.note{margin-top:8px;padding:8px;background:#ffeedd;border-left:3px solid #e94e3b;font-size:14px;color:#2b2b2b}
+.note::before{content:'✏ '}</style></head><body>
+<div class="wrap"><header><h1>매일 쓰는<br><u>AI 도구</u></h1><p class="sub">한국에서 진짜로 많이 쓰는 도구 + 직접 만든 것들 ✨</p></header><div class="chips" id="chips"></div><div class="section">⭑ Curated · <span id="cn"></span></div><div class="grid" id="cur"></div><div class="section">⭑ Mine · <span id="mn"></span></div><div class="grid" id="mine"></div></div>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'All'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function card(t){return `<a class="card" href="${esc(t.url)}" target="_blank"><div class="row"><div class="nm">${esc(t.name)}</div><span class="free">${esc(t.free)}</span></div><div class="by">${esc(t.by)}</div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}</a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mn.map(card).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script>
+</body></html>

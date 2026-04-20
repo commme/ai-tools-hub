@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>AG · Warp Terminal</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#1d1f21;color:#c5c8c6;font-family:'JetBrains Mono','SF Mono',monospace;font-size:13px;padding:16px}
+.term{max-width:1100px;margin:0 auto;background:#0d0e10;border-radius:12px;border:1px solid #2a2d33;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.4)}
+.tbar{padding:10px 16px;background:#16181d;display:flex;gap:8px;align-items:center;border-bottom:1px solid #2a2d33}
+.dot{width:12px;height:12px;border-radius:50%;background:#ff5f57}
+.dot:nth-child(2){background:#febc2e}.dot:nth-child(3){background:#28c840}
+.tbar span{margin-left:auto;color:#6c7280;font-size:12px}
+.body{padding:24px 28px 60px}
+header{margin-bottom:20px}
+.cmd{color:#7dd3fc}
+.cmd::before{content:'❯ ';color:#a78bfa}
+h1{font-size:18px;color:#a7f3d0;margin:8px 0;font-weight:500}
+.sub{color:#6c7280;font-size:12px;margin-bottom:12px}
+.sub::before{content:'# '}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.chip{padding:3px 10px;background:transparent;border:1px solid #2a2d33;color:#94a3b8;font:inherit;font-family:inherit;font-size:11px;cursor:pointer;border-radius:4px}
+.chip.on{background:#a78bfa;color:#0d0e10;border-color:#a78bfa}
+.section{margin:24px 0 8px;color:#fbbf24}
+.section::before{content:'❯ list --filter '}
+.grid{display:flex;flex-direction:column;border-left:2px solid #2a2d33;padding-left:16px;margin-left:8px}
+.card{display:grid;grid-template-columns:1fr auto auto;gap:12px;padding:6px 0;text-decoration:none;color:#c5c8c6;align-items:baseline;border-bottom:1px dashed #2a2d33}
+.card:last-child{border-bottom:none}
+.card:hover .nm{color:#fff;text-decoration:underline}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:baseline}
+.nm{color:#7dd3fc;font-weight:500}
+.by{color:#6c7280;font-size:11px}
+.desc{color:#94a3b8;font-size:12px}
+.free{color:#a7f3d0;font-size:11px}
+.note{display:none}</style></head><body>
+<div class="term"><div class="tbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>~/projects/ai-tools-hub — zsh</span></div><div class="body"><div class="cmd">cat README.md</div><header class=""><h1>매일 쓰는 AI 도구</h1><p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들.</p></header>
+<div class="chips" id="chips"></div>
+<div class="section">큐레이션 한 도구 · <span id="cn"></span></div>
+<div class="grid" id="cur"></div>
+<div class="section">내가 만든 도구 · <span id="mn"></span></div>
+<div class="grid" id="mine"></div></div></div>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'All'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function card(t){return `<a class="card" href="${esc(t.url)}" target="_blank"><div class="row"><span class="nm">${esc(t.name)}</span><span class="desc">${esc(t.description)}</span></div><span class="by">${esc(t.by)}</span><span class="free">[${esc(t.free)}]</span></a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mn.map(card).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script>
+</body></html>

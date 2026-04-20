@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>AR · Tarot Cardstack</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:radial-gradient(ellipse at center,#1a0a2e 0%,#000 100%);color:#fff;font-family:'Pretendard',sans-serif;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:60px 24px 120px}
+header{text-align:center;margin-bottom:48px}
+h1{font-size:clamp(48px,8vw,96px);font-weight:700;letter-spacing:-.03em;line-height:1;background:linear-gradient(135deg,#ffd700,#ff6b9d,#c06eff);-webkit-background-clip:text;color:transparent}
+.sub{margin-top:18px;font-size:17px;color:#c4b5fd;max-width:500px;margin-left:auto;margin-right:auto}
+.chips{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:32px 0}
+.chip{padding:7px 16px;background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);color:#ffd700;font:inherit;font-size:13px;cursor:pointer;border-radius:99px}
+.chip.on{background:#ffd700;color:#1a0a2e;border-color:#ffd700}
+.section{font-size:14px;color:#ffd700;text-transform:uppercase;letter-spacing:.2em;text-align:center;margin:48px 0 24px;font-weight:600}
+.section::before{content:'◊ '}
+.section::after{content:' ◊'}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;justify-items:center}
+.card{aspect-ratio:2/3;background:linear-gradient(135deg,#2a1a4a,#1a0a2e);border:2px solid #ffd700;border-radius:16px;padding:24px;text-decoration:none;color:#fff;display:flex;flex-direction:column;justify-content:space-between;position:relative;transition:transform .4s,box-shadow .4s;width:100%;max-width:240px;box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 0 40px rgba(255,215,0,.05)}
+.card:hover{transform:translateY(-8px) rotate(-2deg);box-shadow:0 20px 50px rgba(255,215,0,.3),inset 0 0 40px rgba(255,215,0,.1)}
+.card::before{content:'✦';position:absolute;top:16px;right:16px;color:#ffd700;font-size:14px}
+.card::after{content:'✦';position:absolute;bottom:16px;left:16px;color:#ffd700;font-size:14px;transform:rotate(180deg)}
+.row{display:flex;flex-direction:column;gap:4px}
+.nm{font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.1;color:#ffd700}
+.by{font-size:10px;color:#c4b5fd;text-transform:uppercase;letter-spacing:.15em;margin-top:6px}
+.desc{font-size:13px;line-height:1.5;color:#e9d5ff;margin:16px 0;flex:1;overflow:hidden}
+.free{font-size:9px;padding:3px 8px;background:rgba(255,215,0,.15);border:1px solid #ffd700;color:#ffd700;border-radius:99px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;align-self:flex-start}
+.note{display:none}</style></head><body>
+<div class="wrap"><header><h1>매일 쓰는 AI 도구</h1><p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들.</p></header>
+<div class="chips" id="chips"></div>
+<div class="section">Curated · <span id="cn"></span></div>
+<div class="grid" id="cur"></div>
+<div class="section">Mine · <span id="mn"></span></div>
+<div class="grid" id="mine"></div></div>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'All'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function card(t){return `<a class="card" href="${esc(t.url)}" target="_blank"><div class="row"><div class="nm">${esc(t.name)}</div><div class="by">${esc(t.by)}</div></div><div class="desc">${esc(t.description)}</div><span class="free">${esc(t.free)}</span></a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mn.map(card).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script>
+</body></html>

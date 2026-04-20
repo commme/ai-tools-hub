@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>AS · Parallax Hero</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0a;color:#fff;font-family:'Pretendard',sans-serif;min-height:100vh;overflow-x:hidden}
+.hero{position:relative;height:80vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,#7c3aed33 0%,transparent 60%),radial-gradient(ellipse at 30% 70%,#ec489933 0%,transparent 50%);animation:float 8s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-20px) scale(1.1)}}
+.hero h1{position:relative;z-index:2;font-size:clamp(56px,12vw,180px);font-weight:900;letter-spacing:-.05em;line-height:.9;text-align:center;background:linear-gradient(135deg,#fff,#c4b5fd 50%,#f472b6);-webkit-background-clip:text;color:transparent;filter:drop-shadow(0 8px 40px rgba(167,139,250,.4))}
+.hero .sub{position:absolute;bottom:10%;left:50%;transform:translateX(-50%);font-size:14px;color:rgba(255,255,255,.5);letter-spacing:.2em;text-transform:uppercase;z-index:2}
+.hero .sub::after{content:' ↓';animation:bounce 1.5s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.wrap{max-width:1200px;margin:0 auto;padding:80px 24px 120px;position:relative;z-index:1;background:#0a0a0a}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.chip{padding:8px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font:inherit;font-size:13px;cursor:pointer;border-radius:99px;backdrop-filter:blur(10px)}
+.chip.on{background:linear-gradient(135deg,#7c3aed,#ec4899);border-color:transparent}
+.section{font-size:14px;color:#a78bfa;text-transform:uppercase;letter-spacing:.15em;margin:48px 0 20px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:linear-gradient(135deg,rgba(124,58,237,.05),rgba(236,72,153,.05));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:22px;text-decoration:none;color:#fff;display:block;transition:all .3s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(167,139,250,.15) 0%,transparent 40%);opacity:0;transition:opacity .3s}
+.card:hover{transform:translateY(-4px);border-color:rgba(167,139,250,.3)}
+.card:hover::before{opacity:1}
+.row{display:flex;justify-content:space-between;align-items:start;margin-bottom:6px;position:relative;z-index:1}
+.nm{font-size:22px;font-weight:700;letter-spacing:-.02em;background:linear-gradient(135deg,#fff,#c4b5fd);-webkit-background-clip:text;color:transparent}
+.by{font-size:11px;color:#a78bfa;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;position:relative;z-index:1}
+.desc{font-size:14px;line-height:1.55;color:rgba(255,255,255,.8);position:relative;z-index:1}
+.free{font-size:10px;padding:3px 9px;background:linear-gradient(135deg,#7c3aed,#ec4899);border-radius:99px;font-weight:600}
+.note{margin-top:10px;padding:9px 12px;background:rgba(167,139,250,.1);border-radius:8px;font-size:12px;color:#c4b5fd;position:relative;z-index:1}</style></head><body>
+<section class="hero"><h1>매일 쓰는<br>AI 도구</h1><div class="sub">Scroll to explore</div></section><div class="wrap"><div class="chips" id="chips"></div><div class="section">Curated · <span id="cn"></span></div><div class="grid" id="cur"></div><div class="section">Mine · <span id="mn"></span></div><div class="grid" id="mine"></div></div>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'All'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function card(t){return `<a class="card" href="${esc(t.url)}" target="_blank"><div class="row"><div class="nm">${esc(t.name)}</div><span class="free">${esc(t.free)}</span></div><div class="by">${esc(t.by)}</div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}</a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mn.map(card).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script>
+</body></html>

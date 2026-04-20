@@ -11,29 +11,13 @@
 :root{--bg:#0a0a0c;--card:#141417;--border:#26262c;--text:#eaeaef;--mute:#8a8a95;--accent:#a78bff;--hot:#ff5d8f;--ok:#5dc66f}
 body{background:var(--bg);color:var(--text);font-family:'Pretendard',sans-serif;min-height:100vh;line-height:1.5}
 .wrap{max-width:1480px;margin:0 auto;padding:48px clamp(16px,3vw,28px) 120px}
-header{margin-bottom:40px}
+header{margin-bottom:32px}
 h1{font-size:clamp(32px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
-.sub{color:var(--mute);font-size:15px;max-width:680px}
+.sub{color:var(--mute);font-size:15px;max-width:720px}
 .sub b{color:var(--text);font-weight:700}
 
-/* ===== Picker panel ===== */
-.picker{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:clamp(20px,3vw,28px);margin:32px 0 32px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
-@media(max-width:720px){.picker{grid-template-columns:1fr}}
-.picker h2{font-size:12px;color:var(--mute);font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px}
-.opts{display:flex;flex-wrap:wrap;gap:7px}
-.opt{padding:8px 14px;background:transparent;border:1px solid var(--border);color:var(--mute);border-radius:999px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
-.opt:hover{color:var(--text);border-color:#3a3a44}
-.opt.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-.match{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);grid-column:1/-1}
-.match-h{font-size:11.5px;color:var(--mute);font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px}
-.match-list{display:flex;flex-wrap:wrap;gap:8px}
-.match-tag{padding:7px 12px;background:rgba(167,139,255,.12);color:var(--accent);border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;border:none;font-family:inherit}
-.match-tag:hover{background:rgba(167,139,255,.22);transform:translateY(-2px)}
-.match-tag .star{color:#fbbf24;margin-left:4px}
-.match-empty{color:var(--mute);font-size:13px;font-style:italic}
-
 /* ===== Toolbar ===== */
-.toolbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:32px;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:14px}
+.toolbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin:24px 0 28px;padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:14px}
 .toolbar-l,.toolbar-r{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .toolbar-label{font-size:11px;color:var(--mute);font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-right:4px}
 .search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);padding:8px 12px;border-radius:8px;border:1px solid var(--border)}
@@ -46,6 +30,9 @@ h1{font-size:clamp(32px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-b
 
 /* ===== Categories filter ===== */
 .cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:36px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.opt{padding:8px 14px;background:transparent;border:1px solid var(--border);color:var(--mute);border-radius:999px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
+.opt:hover{color:var(--text);border-color:#3a3a44}
+.opt.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 /* ===== Section ===== */
 .cat-section{margin-bottom:56px;scroll-margin-top:20px}
@@ -53,34 +40,30 @@ h1{font-size:clamp(32px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-b
 .cat-desc{color:var(--mute);font-size:13px;margin-bottom:20px}
 .cat-count{font-size:12px;color:var(--mute);font-weight:500;background:var(--card);padding:3px 10px;border-radius:999px;border:1px solid var(--border)}
 
-/* ===== Tile grid (responsive by viewport mode) ===== */
+/* ===== Tile grid ===== */
 .grid{display:grid;gap:18px}
 .grid.vp-desktop{grid-template-columns:repeat(auto-fill,minmax(360px,1fr))}
 .grid.vp-tablet{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
 .grid.vp-mobile{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
-/* dense (한눈에) — show all 21 tiles compactly */
 .grid.dense{gap:12px}
-.grid.dense.vp-desktop{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
-.grid.dense.vp-tablet{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
-.grid.dense.vp-mobile{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
-.grid.dense .tile-meta{padding:10px 12px;gap:6px}
-.grid.dense .tile-name{font-size:13px}
-.grid.dense .tile-key{font-size:9.5px}
+.grid.dense.vp-desktop{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.grid.dense.vp-tablet{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.grid.dense.vp-mobile{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.grid.dense .tile-meta{padding:9px 11px;gap:5px}
+.grid.dense .tile-name{font-size:12.5px}
+.grid.dense .tile-key{font-size:9px}
 .grid.dense .tile-tag{font-size:8.5px;padding:2px 5px}
 
 .tile{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .25s;cursor:pointer;position:relative}
 .tile:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 20px 40px -20px rgba(167,139,255,.4)}
 .tile-frame{position:relative;width:100%;overflow:hidden;background:#fff;transition:aspect-ratio .3s}
 .tile-frame iframe{position:absolute;top:0;left:0;border:none;pointer-events:none;background:#fff}
-
-/* viewport sim sizes — iframe is rendered at full size, then scaled to fit tile width */
 .vp-desktop .tile-frame{aspect-ratio:4/3}
 .vp-desktop .tile-frame iframe{width:1280px;height:960px;transform-origin:0 0}
 .vp-tablet .tile-frame{aspect-ratio:3/4}
 .vp-tablet .tile-frame iframe{width:768px;height:1024px;transform-origin:0 0}
 .vp-mobile .tile-frame{aspect-ratio:9/16}
 .vp-mobile .tile-frame iframe{width:375px;height:667px;transform-origin:0 0}
-
 .tile-meta{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
 .tile-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .tile-name{font-size:15px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
@@ -88,14 +71,13 @@ h1{font-size:clamp(32px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-b
 .tile-tags{display:flex;gap:5px;flex-wrap:wrap}
 .tile-tag{font-size:9.5px;padding:3px 7px;background:#1f1f25;color:var(--mute);border-radius:4px;letter-spacing:.05em;text-transform:uppercase;font-weight:600}
 .tile-tag.fx{background:rgba(167,139,255,.12);color:var(--accent)}
-.tile-tag.rx{background:rgba(93,198,111,.12);color:var(--ok)}
+.tile-tag.new{background:rgba(255,93,143,.15);color:var(--hot)}
 .tile-actions{position:absolute;top:10px;right:10px;display:flex;gap:6px;opacity:0;transition:opacity .2s;z-index:2}
 .tile:hover .tile-actions{opacity:1}
 .tile-btn{padding:6px 11px;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none}
 .tile-btn:hover{background:var(--accent)}
 .tile.current{border-color:#d4a574}
-.tile.current::before{content:"★ 현재 적용";position:absolute;top:10px;left:10px;background:#d4a574;color:#1c1a17;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;z-index:2;letter-spacing:.05em}
-.tile.hidden{display:none}
+.tile.current::before{content:"★ 현재";position:absolute;top:10px;left:10px;background:#d4a574;color:#1c1a17;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;z-index:2;letter-spacing:.05em}
 
 /* ===== Modal ===== */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:100;display:none;flex-direction:column}
@@ -110,7 +92,6 @@ h1{font-size:clamp(32px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-b
 .modal-stage{flex:1;display:flex;align-items:center;justify-content:center;background:#1a1a1d;padding:20px;overflow:auto}
 .modal-frame-wrap{background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.5);transition:width .3s,height .3s;max-width:100%;max-height:100%}
 .modal-frame-wrap iframe{width:100%;height:100%;border:none;display:block}
-
 .empty{text-align:center;color:var(--mute);padding:60px 20px;font-size:14px}
 </style>
 </head>
@@ -118,38 +99,8 @@ h1{font-size:clamp(32px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-b
 <div class="wrap">
 <header>
   <h1>디자인 갤러리</h1>
-  <p class="sub"><b>21개 시안</b>을 <b>4개 카테고리</b>(차분/다크/활기/모션)로. 기본은 ▦ 한눈에 모드. 무드·컨셉으로 매칭받거나 뷰포트로 반응형 확인.</p>
+  <p class="sub"><b>50개 시안</b>을 <b>4개 카테고리</b>로. 차분 / 다크 / 활기 / 모션. GitHub·Awwwards·Dribbble 트렌드 반영. 클릭으로 풀스크린 미리보기.</p>
 </header>
-
-<!-- Picker -->
-<section class="picker">
-  <div>
-    <h2>🎨 무드 (배경/색감)</h2>
-    <div class="opts" data-group="mood">
-      <button class="opt" data-val="dark">다크</button>
-      <button class="opt" data-val="light">라이트</button>
-      <button class="opt" data-val="pastel">파스텔</button>
-      <button class="opt" data-val="neon">네온</button>
-      <button class="opt" data-val="paper">종이/베이지</button>
-    </div>
-  </div>
-  <div>
-    <h2>✦ 컨셉 (분위기)</h2>
-    <div class="opts" data-group="vibe">
-      <button class="opt" data-val="minimal">미니멀</button>
-      <button class="opt" data-val="playful">플레이풀</button>
-      <button class="opt" data-val="brutal">브루털</button>
-      <button class="opt" data-val="soft">부드러움</button>
-      <button class="opt" data-val="3d">입체/3D</button>
-      <button class="opt" data-val="editorial">에디토리얼</button>
-      <button class="opt" data-val="kinetic">키네틱</button>
-    </div>
-  </div>
-  <div class="match">
-    <div class="match-h">▸ 매칭되는 시안 <span style="color:var(--mute);font-weight:500;letter-spacing:0;text-transform:none;font-size:11px;margin-left:6px">(★ = 완벽 매치)</span></div>
-    <div class="match-list" id="match-list"><span class="match-empty">위에서 무드와 컨셉을 선택해보세요. 다시 누르면 해제.</span></div>
-  </div>
-</section>
 
 <!-- Toolbar -->
 <div class="toolbar">
@@ -174,13 +125,9 @@ h1{font-size:clamp(32px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-b
   </div>
 </div>
 
-<!-- Category filters -->
 <div class="cats" id="cats"></div>
-
-<!-- Sections -->
 <div id="sections"></div>
 
-<!-- Modal -->
 <div class="modal" id="modal">
   <div class="modal-bar">
     <div class="modal-title" id="modal-title"></div>
@@ -198,50 +145,74 @@ h1{font-size:clamp(32px,4vw,40px);font-weight:800;letter-spacing:-.02em;margin-b
 </div>
 
 <script>
-// ===== Variants — 4 simplified categories =====
 const VARIANTS=[
-  // 차분 (Still) — 8
-  {f:'../index.html',k:'CURRENT',n:'B-2 Claude 톤 오로라',cat:'still',moods:['paper'],vibes:['editorial','soft'],fx:[],current:true},
-  {f:'c-minimal.html',k:'C',n:'일본 미니멀',cat:'still',moods:['light'],vibes:['minimal','editorial'],fx:[]},
-  {f:'e-editorial.html',k:'E',n:'에디토리얼 매거진',cat:'still',moods:['paper'],vibes:['editorial'],fx:[]},
-  {f:'h-notion.html',k:'H',n:'Notion 도큐먼트',cat:'still',moods:['light'],vibes:['minimal','editorial'],fx:[]},
-  {f:'j-scandi.html',k:'J',n:'스칸디나비안',cat:'still',moods:['paper'],vibes:['soft','minimal'],fx:[]},
-  {f:'d-glass.html',k:'D',n:'그라디언트 메시',cat:'still',moods:['pastel'],vibes:['soft'],fx:[]},
-  {f:'t-responsive.html',k:'T',n:'반응형 매거진 ★NEW',cat:'still',moods:['paper'],vibes:['editorial','minimal'],fx:['Responsive']},
+  // ===== 차분 (still) — 잡지·미니멀·에디토리얼 =====
+  {f:'../index.html',k:'CURRENT',n:'B-2 Claude 톤 오로라',cat:'still',fx:[],current:true},
+  {f:'c-minimal.html',k:'C',n:'일본 미니멀',cat:'still',fx:[]},
+  {f:'e-editorial.html',k:'E',n:'에디토리얼 매거진',cat:'still',fx:[]},
+  {f:'h-notion.html',k:'H',n:'Notion 도큐먼트',cat:'still',fx:[]},
+  {f:'j-scandi.html',k:'J',n:'스칸디나비안',cat:'still',fx:[]},
+  {f:'d-glass.html',k:'D',n:'그라디언트 메시',cat:'still',fx:[]},
+  {f:'t-responsive.html',k:'T',n:'반응형 매거진',cat:'still',fx:['Responsive']},
+  {f:'u-bento.html',k:'U',n:'Apple Bento Grid',cat:'still',fx:['NEW']},
+  {f:'v-vercel.html',k:'V',n:'Vercel 그리드',cat:'still',fx:['NEW']},
+  {f:'w-stripe.html',k:'W',n:'Stripe 메시 그라디언트',cat:'still',fx:['NEW']},
+  {f:'x-linear.html',k:'X',n:'Linear 사이드바',cat:'still',fx:['NEW']},
+  {f:'y-swiss.html',k:'Y',n:'스위스 디자인',cat:'still',fx:['NEW']},
+  {f:'z-vogue.html',k:'Z',n:'Vogue 매거진',cat:'still',fx:['NEW']},
+  {f:'aa-typeforce.html',k:'AA',n:'타이포 임팩트',cat:'still',fx:['NEW']},
+  {f:'ab-readme.html',k:'AB',n:'GitHub README',cat:'still',fx:['NEW']},
 
-  // 다크 (Dark) — 3
-  {f:'a-darkneon.html',k:'A',n:'다크 네온 글래스',cat:'dark',moods:['dark','neon'],vibes:['minimal'],fx:['Hover']},
-  {f:'f-terminal.html',k:'F',n:'터미널/모노',cat:'dark',moods:['dark'],vibes:['minimal'],fx:[]},
-  {f:'i-cyberpunk.html',k:'I',n:'사이버펑크 글리치',cat:'dark',moods:['dark','neon'],vibes:['playful'],fx:['Glitch']},
+  // ===== 다크 (dark) — 어두운 배경 + 네온/테크 =====
+  {f:'a-darkneon.html',k:'A',n:'다크 네온 글래스',cat:'dark',fx:['Hover']},
+  {f:'f-terminal.html',k:'F',n:'터미널/모노',cat:'dark',fx:[]},
+  {f:'i-cyberpunk.html',k:'I',n:'사이버펑크 글리치',cat:'dark',fx:['Glitch']},
+  {f:'ac-raycast.html',k:'AC',n:'Raycast 커맨드',cat:'dark',fx:['NEW']},
+  {f:'ad-spotify.html',k:'AD',n:'Spotify 다크',cat:'dark',fx:['NEW']},
+  {f:'ae-discord.html',k:'AE',n:'Discord 채팅',cat:'dark',fx:['NEW']},
+  {f:'af-vscode.html',k:'AF',n:'VSCode 에디터',cat:'dark',fx:['NEW']},
+  {f:'ag-warp.html',k:'AG',n:'Warp 터미널',cat:'dark',fx:['NEW']},
+  {f:'ah-arc.html',k:'AH',n:'Arc 브라우저',cat:'dark',fx:['NEW']},
+  {f:'ai-glassdeep.html',k:'AI',n:'딥 글래스모피즘',cat:'dark',fx:['NEW']},
 
-  // 활기 (Pop) — 6
-  {f:'g-y2k.html',k:'G',n:'Y2K 메탈릭',cat:'pop',moods:['pastel','neon'],vibes:['playful'],fx:[]},
-  {f:'k-mosaic.html',k:'K',n:'모자이크 핀터레스트',cat:'pop',moods:['pastel'],vibes:['playful','soft'],fx:[]},
-  {f:'o-sticker.html',k:'O',n:'종이 스티커 콜라주',cat:'pop',moods:['paper'],vibes:['playful'],fx:['Hover']},
-  {f:'r-comic.html',k:'R',n:'만화책 패널',cat:'pop',moods:['paper','neon'],vibes:['playful','brutal'],fx:['Hover']},
-  {f:'b-brutal.html',k:'B',n:'브루털리즘 모노',cat:'pop',moods:['light','neon'],vibes:['brutal'],fx:[]},
-  {f:'l-bauhaus.html',k:'L',n:'Bauhaus 기하학',cat:'pop',moods:['paper'],vibes:['brutal','playful'],fx:[]},
+  // ===== 활기 (pop) — 밝고 즐거움 =====
+  {f:'g-y2k.html',k:'G',n:'Y2K 메탈릭',cat:'pop',fx:[]},
+  {f:'k-mosaic.html',k:'K',n:'모자이크 핀터레스트',cat:'pop',fx:[]},
+  {f:'o-sticker.html',k:'O',n:'종이 스티커 콜라주',cat:'pop',fx:['Hover']},
+  {f:'r-comic.html',k:'R',n:'만화책 패널',cat:'pop',fx:['Hover']},
+  {f:'b-brutal.html',k:'B',n:'브루털리즘 모노',cat:'pop',fx:[]},
+  {f:'l-bauhaus.html',k:'L',n:'Bauhaus 기하학',cat:'pop',fx:[]},
+  {f:'ak-vaporwave.html',k:'AK',n:'바이퍼웨이브',cat:'pop',fx:['NEW']},
+  {f:'al-memphis.html',k:'AL',n:'멤피스 패턴',cat:'pop',fx:['NEW']},
+  {f:'am-riso.html',k:'AM',n:'리소그래프 프린트',cat:'pop',fx:['NEW']},
+  {f:'an-sketch.html',k:'AN',n:'손그림 스케치',cat:'pop',fx:['NEW']},
+  {f:'ao-anime.html',k:'AO',n:'애니메 비주얼',cat:'pop',fx:['NEW']},
+  {f:'ap-geocities.html',k:'AP',n:'90s 지오시티즈',cat:'pop',fx:['NEW']},
+  {f:'aq-marquee.html',k:'AQ',n:'마키 스크롤',cat:'pop',fx:['NEW','Motion']},
+  {f:'ar-cardstack.html',k:'AR',n:'카드 스택',cat:'pop',fx:['NEW']},
 
-  // 모션 (Motion) — 5
-  {f:'s-kinetic.html',k:'S',n:'키네틱 인터랙션 ★NEW',cat:'motion',moods:['dark'],vibes:['kinetic','3d'],fx:['Scroll','Hover','Cursor']},
-  {f:'m-tilt3d.html',k:'M',n:'3D 틸트 패럴랙스',cat:'motion',moods:['dark','neon'],vibes:['3d','kinetic'],fx:['Hover','3D']},
-  {f:'n-isometric.html',k:'N',n:'아이소메트릭 큐브',cat:'motion',moods:['dark'],vibes:['3d'],fx:['3D']},
-  {f:'p-clay.html',k:'P',n:'클레이 뉴모피즘',cat:'motion',moods:['pastel','light'],vibes:['soft','3d'],fx:['Hover']},
-  {f:'q-blob.html',k:'Q',n:'블롭 모핑',cat:'motion',moods:['pastel'],vibes:['soft','3d'],fx:['Float']}
+  // ===== 모션 (motion) — 움직임·입체·인터랙션 =====
+  {f:'s-kinetic.html',k:'S',n:'키네틱 인터랙션',cat:'motion',fx:['Scroll','Hover','Cursor']},
+  {f:'m-tilt3d.html',k:'M',n:'3D 틸트 패럴랙스',cat:'motion',fx:['Hover','3D']},
+  {f:'n-isometric.html',k:'N',n:'아이소메트릭 큐브',cat:'motion',fx:['3D']},
+  {f:'p-clay.html',k:'P',n:'클레이 뉴모피즘',cat:'motion',fx:['Hover']},
+  {f:'q-blob.html',k:'Q',n:'블롭 모핑',cat:'motion',fx:['Float']},
+  {f:'as-parallax.html',k:'AS',n:'심층 패럴랙스',cat:'motion',fx:['NEW','Scroll']},
+  {f:'at-hero3d.html',k:'AT',n:'3D 히어로',cat:'motion',fx:['NEW','3D']},
+  {f:'au-diagonal.html',k:'AU',n:'대각선 섹션',cat:'motion',fx:['NEW']},
+  {f:'av-split.html',k:'AV',n:'스플릿 50/50',cat:'motion',fx:['NEW']},
+  {f:'aw-sticky.html',k:'AW',n:'스티키 변형',cat:'motion',fx:['NEW','Scroll']},
+  {f:'ax-scrollstory.html',k:'AX',n:'Awwwards 스크롤',cat:'motion',fx:['NEW','Scroll']}
 ];
 
 const CATEGORIES=[
-  {id:'still',name:'📰 차분',desc:'잡지·미니멀·에디토리얼. 읽기 좋고 차분한 톤.',color:'#d4a574'},
-  {id:'dark',name:'🌙 다크',desc:'어두운 배경 + 네온. 테크/개발자 분위기.',color:'#22d3ee'},
-  {id:'pop',name:'🎨 활기',desc:'밝고 즐거움. 강한 도형·만화·스티커.',color:'#ff5d8f'},
-  {id:'motion',name:'⚡ 모션',desc:'움직임·입체. 스크롤/호버/3D 인터랙션.',color:'#a78bff'}
+  {id:'still',name:'📰 차분',desc:'잡지·미니멀·에디토리얼. 읽기 좋고 차분한 톤. (Apple/Vercel/Stripe/Linear 등 SaaS 트렌드)',color:'#d4a574'},
+  {id:'dark',name:'🌙 다크',desc:'어두운 배경 + 네온. 테크/개발자 분위기. (Raycast/Spotify/VSCode/Arc 등)',color:'#22d3ee'},
+  {id:'pop',name:'🎨 활기',desc:'밝고 즐거움. 강한 도형·만화·스티커. (Memphis/Riso/애니메/Y2K 등)',color:'#ff5d8f'},
+  {id:'motion',name:'⚡ 모션',desc:'움직임·입체. 스크롤/호버/3D 인터랙션. (Awwwards 트렌드)',color:'#a78bff'}
 ];
 
-let curCat='all';
-let curVp='desktop';
-let curSearch='';
-let curView='dense'; // 'dense' (한눈에) | 'section' (카테고리별)
-const picker={mood:null,vibe:null};
+let curCat='all', curVp='desktop', curSearch='', curView='dense';
 
 function renderCats(){
   const root=document.getElementById('cats');
@@ -253,19 +224,38 @@ function renderCats(){
   root.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{curCat=b.dataset.cat;renderCats();renderSections()});
 }
 
+function matchSearch(v){
+  if(!curSearch)return true;
+  const q=curSearch.toLowerCase();
+  return v.n.toLowerCase().includes(q)||v.k.toLowerCase().includes(q)||v.cat.includes(q);
+}
+
+function tile(v){
+  const fxBadges=v.fx.map(f=>`<span class="tile-tag ${f==='NEW'?'new':'fx'}">${f}</span>`).join('');
+  return `<div class="tile ${v.current?'current':''}" data-f="${v.f}" data-n="${v.n}">
+    <div class="tile-actions">
+      <a class="tile-btn" href="${v.f}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ 새탭</a>
+    </div>
+    <div class="tile-frame"><iframe src="${v.f}" loading="lazy"></iframe></div>
+    <div class="tile-meta">
+      <div class="tile-top">
+        <div><div class="tile-name">${v.n}</div><div class="tile-key">${v.k}</div></div>
+      </div>
+      <div class="tile-tags">${fxBadges}</div>
+    </div>
+  </div>`;
+}
+
 function renderSections(){
   const root=document.getElementById('sections');
-  // Dense (한눈에) — single grid, no sections
   if(curView==='dense'){
     const items=VARIANTS.filter(v=>(curCat==='all'||v.cat===curCat)&&matchSearch(v));
     if(!items.length){root.innerHTML=`<div class="empty">검색 결과가 없어요.</div>`;return;}
     root.innerHTML=`<div class="grid dense vp-${curVp}">${items.map(tile).join('')}</div>`;
     scaleFrames();bindTiles();return;
   }
-  // Sectioned (카테고리별)
   const cats=curCat==='all'?CATEGORIES:CATEGORIES.filter(c=>c.id===curCat);
-  let html='';
-  let totalVisible=0;
+  let html='', totalVisible=0;
   cats.forEach(c=>{
     const items=VARIANTS.filter(v=>v.cat===c.id&&matchSearch(v));
     if(!items.length)return;
@@ -276,45 +266,19 @@ function renderSections(){
       <div class="grid vp-${curVp}">${items.map(tile).join('')}</div>
     </section>`;
   });
-  if(!totalVisible)html=`<div class="empty">검색 결과가 없어요. 다른 키워드를 시도해보세요.</div>`;
+  if(!totalVisible)html=`<div class="empty">검색 결과가 없어요.</div>`;
   root.innerHTML=html;
-  scaleFrames();
-  bindTiles();
-}
-
-function matchSearch(v){
-  if(!curSearch)return true;
-  const q=curSearch.toLowerCase();
-  return v.n.toLowerCase().includes(q)||v.k.toLowerCase().includes(q)||v.cat.includes(q);
-}
-
-function tile(v){
-  const fxBadges=v.fx.map(f=>`<span class="tile-tag fx">${f}</span>`).join('');
-  const rxBadge=v.cat==='responsive'?`<span class="tile-tag rx">Responsive</span>`:'';
-  return `<div class="tile ${v.current?'current':''}" data-f="${v.f}" data-n="${v.n}">
-    <div class="tile-actions">
-      <a class="tile-btn" href="${v.f}" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ 새탭</a>
-    </div>
-    <div class="tile-frame"><iframe src="${v.f}" loading="lazy"></iframe></div>
-    <div class="tile-meta">
-      <div class="tile-top">
-        <div><div class="tile-name">${v.n}</div><div class="tile-key">${v.k}</div></div>
-      </div>
-      <div class="tile-tags">${rxBadge}${fxBadges}${v.vibes.slice(0,2).map(x=>`<span class="tile-tag">${x}</span>`).join('')}</div>
-    </div>
-  </div>`;
+  scaleFrames();bindTiles();
 }
 
 function scaleFrames(){
-  // scale iframe to fit tile width based on viewport mode
   document.querySelectorAll('.tile').forEach(t=>{
     const frame=t.querySelector('.tile-frame');
     const iframe=t.querySelector('iframe');
     if(!frame||!iframe)return;
     const w=frame.clientWidth;
     const baseW=curVp==='desktop'?1280:curVp==='tablet'?768:375;
-    const scale=w/baseW;
-    iframe.style.transform=`scale(${scale})`;
+    iframe.style.transform=`scale(${w/baseW})`;
   });
 }
 window.addEventListener('resize',scaleFrames);
@@ -338,11 +302,8 @@ function setModalVp(v){
   modalVp=v;
   const[w,h]=VP_SIZES[v];
   const wrap=document.getElementById('modal-wrap');
-  // calculate available space
   const stage=document.querySelector('.modal-stage');
-  const maxW=stage.clientWidth-40;
-  const maxH=stage.clientHeight-40;
-  const sc=Math.min(maxW/w,maxH/h,1);
+  const sc=Math.min((stage.clientWidth-40)/w,(stage.clientHeight-40)/h,1);
   wrap.style.width=(w*sc)+'px';
   wrap.style.height=(h*sc)+'px';
   document.querySelectorAll('.modal-btn[data-mvp]').forEach(b=>b.classList.toggle('on',b.dataset.mvp===v));
@@ -353,68 +314,13 @@ function closeModal(){
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 
-// viewport toggle
 document.querySelectorAll('#vp-toggle .vp-btn').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('#vp-toggle .vp-btn').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    curVp=b.dataset.vp;
-    renderSections();
-  };
+  b.onclick=()=>{document.querySelectorAll('#vp-toggle .vp-btn').forEach(x=>x.classList.remove('on'));b.classList.add('on');curVp=b.dataset.vp;renderSections();};
 });
-
-// view mode toggle (한눈에 / 카테고리별)
 document.querySelectorAll('#view-toggle .vp-btn').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('#view-toggle .vp-btn').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    curView=b.dataset.view;
-    renderSections();
-  };
+  b.onclick=()=>{document.querySelectorAll('#view-toggle .vp-btn').forEach(x=>x.classList.remove('on'));b.classList.add('on');curView=b.dataset.view;renderSections();};
 });
-
-// search
-document.getElementById('search').oninput=e=>{
-  curSearch=e.target.value.trim();
-  renderSections();
-};
-
-// picker
-document.querySelectorAll('.picker .opts .opt').forEach(b=>{
-  const group=b.parentElement.dataset.group;
-  if(!group)return;
-  b.onclick=()=>{
-    if(picker[group]===b.dataset.val){
-      picker[group]=null;
-      b.classList.remove('on');
-    }else{
-      b.parentElement.querySelectorAll('.opt').forEach(x=>x.classList.remove('on'));
-      b.classList.add('on');
-      picker[group]=b.dataset.val;
-    }
-    renderMatch();
-  };
-});
-
-function renderMatch(){
-  const list=document.getElementById('match-list');
-  if(!picker.mood&&!picker.vibe){
-    list.innerHTML='<span class="match-empty">위에서 무드와 컨셉을 선택해보세요. 다시 누르면 해제.</span>';
-    return;
-  }
-  const matches=VARIANTS.map(v=>{
-    let score=0;
-    let perfect=true;
-    if(picker.mood){if(v.moods.includes(picker.mood))score+=2;else perfect=false}
-    if(picker.vibe){if(v.vibes.includes(picker.vibe))score+=2;else perfect=false}
-    return {v,score,perfect:perfect&&score>=2};
-  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,8);
-  if(!matches.length){
-    list.innerHTML='<span class="match-empty">조건에 딱 맞는 시안이 없어요. 다른 조합을 시도해보세요.</span>';
-    return;
-  }
-  list.innerHTML=matches.map(({v,perfect})=>`<button class="match-tag" onclick="openModal('${v.f}','${v.n.replace(/'/g,"\\'")}')">${v.k} · ${v.n}${perfect?'<span class="star">★</span>':''}</button>`).join('');
-}
+document.getElementById('search').oninput=e=>{curSearch=e.target.value.trim();renderSections();};
 
 renderCats();
 renderSections();

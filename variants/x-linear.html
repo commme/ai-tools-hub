@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>X · Linear App</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#08090a;color:#f7f8f8;font-family:'Inter','Pretendard',sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:80px 24px 120px}
+header{padding-bottom:48px}
+.logo{width:24px;height:24px;background:linear-gradient(135deg,#5e6ad2,#8a92ff);border-radius:6px;margin-bottom:32px}
+h1{font-size:clamp(40px,6vw,72px);font-weight:600;letter-spacing:-.04em;line-height:1.05}
+.sub{margin-top:18px;color:#8a8f98;font-size:17px;max-width:560px;line-height:1.55}
+.chips{display:flex;gap:4px;margin:40px 0 24px;flex-wrap:wrap;padding:4px;background:#15171a;border-radius:8px;width:fit-content}
+.chip{padding:6px 12px;border-radius:6px;background:transparent;border:none;color:#8a8f98;font:inherit;font-size:13px;cursor:pointer;font-weight:500}
+.chip:hover{color:#f7f8f8}
+.chip.on{background:#1f2125;color:#f7f8f8}
+.section{font-size:13px;color:#8a8f98;margin:48px 0 12px;font-weight:500}
+.list{border-top:1px solid #1f2125}
+.row{display:grid;grid-template-columns:24px 1fr 100px 80px;gap:16px;padding:14px 8px;border-bottom:1px solid #1f2125;text-decoration:none;color:#f7f8f8;align-items:center;transition:background .12s}
+.row:hover{background:#15171a}
+.icon{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,#5e6ad2,#8a92ff);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.body{display:flex;flex-direction:column;gap:2px;min-width:0}
+.nm{font-size:14px;font-weight:500;letter-spacing:-.01em}
+.desc{font-size:13px;color:#8a8f98;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.by{font-size:12px;color:#8a8f98}
+.free{font-size:11px;padding:2px 8px;background:#1f2125;border-radius:4px;color:#a8aab1;text-align:center;font-weight:500}
+</style></head><body>
+<main class="wrap">
+<header><div class="logo"></div><h1>매일 쓰는 AI 도구</h1><p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들. 과장 없이.</p></header>
+<div class="chips" id="chips"></div>
+<div class="section">Curated · <span id="cn"></span></div>
+<div class="list" id="cur"></div>
+<div class="section">My tools · <span id="mn"></span></div>
+<div class="list" id="mine"></div>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'All'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function row(t){return `<a class="row" href="${esc(t.url)}" target="_blank"><div class="icon">${esc(t.name[0])}</div><div class="body"><div class="nm">${esc(t.name)}</div><div class="desc">${esc(t.description)}</div></div><div class="by">${esc(t.by)}</div><div class="free">${esc(t.free)}</div></a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(row).join('');document.getElementById('mine').innerHTML=mn.map(row).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script></body></html>

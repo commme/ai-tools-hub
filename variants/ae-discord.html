@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>AE · Discord Server</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#36393f;color:#dcddde;font-family:'gg sans',-apple-system,'Pretendard',sans-serif;display:flex;min-height:100vh}
+.side{width:240px;background:#2f3136;padding:16px;flex-shrink:0;border-right:1px solid #202225}
+.side h2{font-size:11px;text-transform:uppercase;color:#8e9297;font-weight:700;margin-bottom:8px;letter-spacing:.05em}
+.side .ch{padding:6px 8px;border-radius:4px;color:#8e9297;font-size:14px;cursor:pointer;margin-bottom:2px}
+.side .ch.on{background:#42464d;color:#fff}
+.side .ch::before{content:'# ';color:#8e9297}
+.main{flex:1;padding:24px 32px 80px;overflow-x:auto}
+header{padding-bottom:24px;border-bottom:1px solid #202225;margin-bottom:24px}
+h1{font-size:32px;font-weight:700;color:#fff}
+h1::before{content:'# ';color:#8e9297;font-weight:400}
+.sub{color:#8e9297;margin-top:8px;font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0}
+.chip{padding:4px 10px;background:#4f545c;border:none;border-radius:4px;color:#fff;font:inherit;font-size:12px;cursor:pointer}
+.chip.on{background:#5865f2}
+.section{font-size:14px;color:#8e9297;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:32px 0 12px}
+.grid{display:flex;flex-direction:column;gap:0}
+.card{display:grid;grid-template-columns:40px 1fr;gap:14px;padding:10px 16px;text-decoration:none;color:#dcddde;border-radius:4px;transition:background .1s;align-items:start}
+.card:hover{background:#32353b}
+.card::before{content:'';width:40px;height:40px;background:linear-gradient(135deg,#5865f2,#7289da);border-radius:50%;display:block}
+.row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.nm{font-size:15px;font-weight:600;color:#fff}
+.by{font-size:11px;color:#a3a6aa}
+.desc{font-size:14px;color:#dcddde;line-height:1.4;margin-top:2px}
+.free{font-size:10px;padding:1px 5px;background:#5865f2;color:#fff;border-radius:3px;text-transform:uppercase;font-weight:700}
+.note{margin-top:6px;padding:8px 12px;background:#2f3136;border-left:4px solid #5865f2;font-size:13px;color:#b9bbbe;border-radius:4px}</style></head><body>
+<aside class="side"><h2>Categories</h2><div class="ch on"># general</div><div class="ch"># writing</div><div class="ch"># image</div><div class="ch"># coding</div><div class="ch"># mine</div></aside>
+<main class="main"><header class=""><h1>매일 쓰는 AI 도구</h1><p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들.</p></header>
+<div class="chips" id="chips"></div>
+<div class="section">큐레이션 한 도구 · <span id="cn"></span></div>
+<div class="grid" id="cur"></div>
+<div class="section">내가 만든 도구 · <span id="mn"></span></div>
+<div class="grid" id="mine"></div></main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'All'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function card(t){return `<a class="card" href="${esc(t.url)}" target="_blank"><div class="body"><div class="row"><span class="nm">${esc(t.name)}</span><span class="by">${esc(t.by)}</span><span class="free">${esc(t.free)}</span></div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}</div></a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mn.map(card).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script>
+</body></html>

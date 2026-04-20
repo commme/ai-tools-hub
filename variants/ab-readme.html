@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>AB · GitHub README</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,'Pretendard',sans-serif;font-size:14px;line-height:1.6}
+main{max-width:900px;margin:0 auto;padding:32px 24px 80px}
+header h1{font-size:32px;font-weight:600;border-bottom:1px solid #30363d;padding-bottom:10px;margin-bottom:16px;color:#e6edf3}
+header h1::before{content:'# '}
+.sub{color:#8b949e;margin-bottom:24px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0}
+.chip{padding:4px 12px;background:#21262d;border:1px solid #30363d;border-radius:99px;color:#c9d1d9;font:inherit;font-size:12px;cursor:pointer}
+.chip.on{background:#1f6feb;border-color:#1f6feb;color:#fff}
+.section{font-size:24px;font-weight:600;border-bottom:1px solid #30363d;padding-bottom:8px;margin:32px 0 16px;color:#e6edf3}
+.section::before{content:'## '}
+.grid{display:flex;flex-direction:column;border:1px solid #30363d;border-radius:6px;overflow:hidden}
+.card{padding:16px;border-bottom:1px solid #30363d;text-decoration:none;color:#c9d1d9;display:block}
+.card:last-child{border-bottom:none}
+.card:hover{background:#161b22}
+.row{display:flex;justify-content:space-between;align-items:start;margin-bottom:6px}
+.nm{font-size:16px;font-weight:600;color:#58a6ff}
+.nm::before{content:'└ '}
+.by{font-size:12px;color:#8b949e;margin-bottom:8px;font-family:'SFMono-Regular',monospace}
+.by::before{content:'> by '}
+.desc{font-size:13px;color:#c9d1d9}
+.free{font-size:11px;padding:2px 7px;background:#1f6feb33;color:#58a6ff;border-radius:99px;font-family:monospace}
+.note{margin-top:8px;padding:10px;background:#161b22;border-left:3px solid #1f6feb;font-size:12px;color:#8b949e;border-radius:0 4px 4px 0}
+.note::before{content:'> 💡 '}</style></head><body>
+<main><header class=""><h1>매일 쓰는 AI 도구</h1><p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들.</p></header>
+<div class="chips" id="chips"></div>
+<div class="section">큐레이션 한 도구 · <span id="cn"></span></div>
+<div class="grid" id="cur"></div>
+<div class="section">내가 만든 도구 · <span id="mn"></span></div>
+<div class="grid" id="mine"></div></main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'All'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function card(t){return `<a class="card" href="${esc(t.url)}" target="_blank"><div class="row"><div class="nm">${esc(t.name)}</div><span class="free">${esc(t.free)}</span></div><div class="by">${esc(t.by)}</div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}</a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mn.map(card).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script>
+</body></html>

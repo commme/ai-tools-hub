@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>W · Stripe Gradient</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a2540;color:#fff;font-family:'Pretendard',sans-serif;min-height:100vh;overflow-x:hidden;position:relative}
+body::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#a47fe3 0%,#7a5af8 25%,#00d4ff 60%,#0a2540 100%);clip-path:polygon(0 0,100% 0,100% 60%,0 95%);z-index:0}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:64px 24px 120px}
+header{padding:40px 0 80px}
+.kicker{font-size:13px;color:#a47fe3;font-weight:600;letter-spacing:.05em;margin-bottom:16px}
+h1{font-size:clamp(48px,8vw,96px);font-weight:700;letter-spacing:-.04em;line-height:1.05;margin-bottom:20px}
+.sub{font-size:20px;max-width:580px;line-height:1.5;color:rgba(255,255,255,.85)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:32px 0}
+.chip{padding:8px 16px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font:inherit;font-size:13px;cursor:pointer;backdrop-filter:blur(10px)}
+.chip.on{background:#fff;color:#0a2540}
+.section{font-size:14px;color:#a47fe3;text-transform:uppercase;letter-spacing:.1em;margin:48px 0 20px;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:rgba(255,255,255,.08);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:24px;text-decoration:none;color:#fff;transition:transform .25s,background .25s;display:block}
+.card:hover{transform:translateY(-4px);background:rgba(255,255,255,.15)}
+.row{display:flex;justify-content:space-between;align-items:start;margin-bottom:8px}
+.nm{font-size:20px;font-weight:700;letter-spacing:-.02em}
+.by{font-size:11px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+.desc{font-size:14px;line-height:1.55;color:rgba(255,255,255,.85);margin-bottom:14px}
+.free{font-size:11px;padding:4px 10px;background:linear-gradient(135deg,#7a5af8,#00d4ff);border-radius:99px;font-weight:600;white-space:nowrap}
+.tags{display:flex;gap:6px;flex-wrap:wrap;font-size:11px}
+.tags span{padding:2px 8px;background:rgba(255,255,255,.1);border-radius:4px}
+.note{font-size:12px;color:#00d4ff;padding:8px 12px;background:rgba(0,212,255,.1);border-radius:8px;margin:8px 0}
+</style></head><body>
+<main class="wrap">
+<header><div class="kicker">— AI TOOLS · 2026</div><h1>매일 쓰는<br>AI 도구</h1><p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들.</p></header>
+<div class="chips" id="chips"></div>
+<div class="section">큐레이션 한 도구 · <span id="cn"></span></div>
+<div class="grid" id="cur"></div>
+<div class="section">내가 만든 도구 · <span id="mn"></span></div>
+<div class="grid" id="mine"></div>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'전체'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function card(t){return `<a class="card" href="${esc(t.url)}" target="_blank"><div class="row"><div class="nm">${esc(t.name)}</div><span class="free">${esc(t.free)}</span></div><div class="by">${esc(t.by)}</div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}<div class="tags">${t.tags.map(x=>`<span>${esc(x)}</span>`).join('')}</div></a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mn.map(card).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script></body></html>

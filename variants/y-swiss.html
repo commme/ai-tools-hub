@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>Y · Swiss Grid</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fff;color:#000;font-family:'Inter','Pretendard',sans-serif}
+.wrap{max-width:1200px;margin:0 auto;padding:48px 32px 120px}
+.grid12{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+header{border-top:6px solid #ff0000;padding-top:32px;margin-bottom:64px;display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.no{grid-column:1/3;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
+h1{grid-column:3/13;font-size:clamp(56px,9vw,120px);font-weight:900;letter-spacing:-.05em;line-height:.9;text-transform:uppercase}
+.sub{grid-column:3/9;margin-top:24px;font-size:16px;line-height:1.4;font-weight:400}
+.chips{grid-column:1/13;display:flex;gap:0;margin:48px 0 32px;border-top:2px solid #000;border-bottom:2px solid #000}
+.chip{flex:1;padding:14px;background:#fff;border:none;border-right:1px solid #000;font:inherit;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:pointer}
+.chip:last-child{border-right:none}
+.chip.on{background:#ff0000;color:#fff}
+.section{grid-column:1/13;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border-bottom:2px solid #000;padding-bottom:8px;margin:48px 0 16px}
+.list{grid-column:1/13;display:grid;grid-template-columns:repeat(12,1fr);gap:0}
+.item{grid-column:span 4;padding:24px;border-right:1px solid #000;border-bottom:1px solid #000;text-decoration:none;color:#000;display:block;min-height:200px}
+.item:hover{background:#000;color:#fff}
+.item:hover .free{background:#ff0000}
+.row{display:flex;justify-content:space-between;align-items:start;margin-bottom:8px}
+.nm{font-size:24px;font-weight:900;letter-spacing:-.02em;line-height:1.05;text-transform:uppercase}
+.by{font-size:10px;text-transform:uppercase;letter-spacing:.15em;font-weight:700;margin-bottom:14px}
+.desc{font-size:13px;line-height:1.45}
+.free{font-size:9px;padding:3px 6px;background:#000;color:#fff;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+@media(max-width:800px){.item{grid-column:span 6}}
+@media(max-width:500px){.item{grid-column:span 12}}
+</style></head><body>
+<main class="wrap">
+<header class="grid12"><div class="no">N°001 / 2026</div><h1>AI<br>TOOLS</h1><p class="sub">한국에서 실제로 많이 쓰는 도구 + 직접 만든 작은 도구들. 과장 없이, 기능 그대로.</p></header>
+<div class="grid12">
+<div class="chips" id="chips"></div>
+<div class="section">A · Curated <span id="cn"></span></div>
+<div class="list" id="cur"></div>
+<div class="section">B · Mine <span id="mn"></span></div>
+<div class="list" id="mine"></div>
+</div>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'All'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function item(t){return `<a class="item" href="${esc(t.url)}" target="_blank"><div class="row"><div class="nm">${esc(t.name)}</div><span class="free">${esc(t.free)}</span></div><div class="by">${esc(t.by)}</div><div class="desc">${esc(t.description)}</div></a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(item).join('');document.getElementById('mine').innerHTML=mn.map(item).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script></body></html>

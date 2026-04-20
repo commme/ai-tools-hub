@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>AX · Scroll Story</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0a;color:#fff;font-family:'Pretendard',sans-serif;min-height:100vh;overflow-x:hidden}
+.chapter{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px 24px;position:relative;scroll-snap-align:start}
+main{scroll-snap-type:y mandatory;height:100vh;overflow-y:auto}
+.c1{background:radial-gradient(ellipse at center,#1a1a4a 0%,#0a0a0a 70%)}
+.c1 h1{font-size:clamp(56px,12vw,180px);font-weight:900;letter-spacing:-.05em;line-height:.85;text-align:center;background:linear-gradient(135deg,#fff,#c4b5fd);-webkit-background-clip:text;color:transparent}
+.c1 .sub{position:absolute;bottom:12%;left:50%;transform:translateX(-50%);font-size:14px;color:#a78bfa;letter-spacing:.3em;text-transform:uppercase}
+.c2{background:linear-gradient(135deg,#2a0a4a,#0a0a0a);flex-direction:column}
+.c2 .num{font-size:clamp(120px,20vw,300px);font-weight:900;color:#7c3aed;line-height:1;letter-spacing:-.05em}
+.c2 .txt{font-size:clamp(24px,3vw,40px);font-weight:600;text-align:center;max-width:800px;margin-top:-40px}
+.c3{flex-direction:column;padding:80px 24px;height:auto;min-height:100vh;scroll-snap-align:start;align-items:stretch;justify-content:flex-start}
+.c3-inner{max-width:1200px;margin:0 auto;width:100%}
+.c3 .kicker{font-size:14px;color:#a78bfa;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px;font-weight:700}
+.c3 h2{font-size:clamp(40px,6vw,80px);font-weight:800;letter-spacing:-.03em;line-height:1;margin-bottom:40px;background:linear-gradient(135deg,#fff,#f472b6);-webkit-background-clip:text;color:transparent}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.chip{padding:8px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;font:inherit;font-size:13px;cursor:pointer;border-radius:99px}
+.chip.on{background:#7c3aed;border-color:#7c3aed}
+.section{font-size:13px;color:#a78bfa;text-transform:uppercase;letter-spacing:.2em;margin:48px 0 20px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:rgba(124,58,237,.05);border:1px solid rgba(124,58,237,.2);border-radius:14px;padding:22px;text-decoration:none;color:#fff;display:block;transition:all .3s}
+.card:hover{background:rgba(124,58,237,.1);border-color:#7c3aed;transform:translateY(-3px)}
+.row{display:flex;justify-content:space-between;align-items:start;margin-bottom:6px}
+.nm{font-size:20px;font-weight:700;letter-spacing:-.02em}
+.by{font-size:11px;color:#a78bfa;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.desc{font-size:14px;line-height:1.55;color:rgba(255,255,255,.8)}
+.free{font-size:10px;padding:3px 8px;background:#7c3aed;border-radius:99px;font-weight:600}
+.note{margin-top:8px;padding:8px 10px;background:rgba(167,139,250,.1);border-radius:8px;font-size:12px;color:#c4b5fd}</style></head><body>
+<main>
+<section class="chapter c1"><h1>매일 쓰는<br>AI 도구</h1><div class="sub">— Chapter I · 2026 —</div></section>
+<section class="chapter c2"><div class="num">33</div><div class="txt">한국에서 실제로 많이 쓰는 도구와 직접 만든 작은 도구들.</div></section>
+<section class="chapter c3"><div class="c3-inner"><div class="kicker">Chapter III · Collection</div><h2>전체 도구 목록</h2><div class="chips" id="chips"></div><div class="section">Curated · <span id="cn"></span></div><div class="grid" id="cur"></div><div class="section">Mine · <span id="mn"></span></div><div class="grid" id="mine"></div></div></section>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'All'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function card(t){return `<a class="card" href="${esc(t.url)}" target="_blank"><div class="row"><div class="nm">${esc(t.name)}</div><span class="free">${esc(t.free)}</span></div><div class="by">${esc(t.by)}</div><div class="desc">${esc(t.description)}</div>${t.my_note?`<div class="note">${esc(t.my_note)}</div>`:''}</a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mn.map(card).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script>
+</body></html>

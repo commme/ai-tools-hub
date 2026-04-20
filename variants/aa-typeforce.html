@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>AA · Typography Force</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#fff;color:#000;font-family:'Pretendard',sans-serif;overflow-x:hidden}
+.wrap{max-width:1400px;margin:0 auto;padding:32px 24px 120px}
+header{margin-bottom:32px}
+h1{font-family:'Anton',sans-serif;font-size:clamp(120px,22vw,320px);font-weight:400;line-height:.82;letter-spacing:-.05em;text-transform:uppercase;margin-bottom:12px}
+h1 b{color:#ff3030;font-weight:400}
+.sub{font-size:18px;max-width:560px;line-height:1.4;margin-bottom:24px;font-weight:500}
+.chips{display:flex;gap:0;flex-wrap:wrap;margin:24px 0;border:3px solid #000}
+.chip{padding:10px 18px;background:#fff;border:none;border-right:3px solid #000;font:inherit;font-family:'Archivo Black',sans-serif;font-size:13px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em}
+.chip:last-child{border-right:none}
+.chip.on{background:#000;color:#fff}
+.section{font-family:'Anton',sans-serif;font-size:64px;text-transform:uppercase;letter-spacing:-.03em;margin:48px 0 16px;border-bottom:6px solid #000;padding-bottom:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:0;border:3px solid #000;border-bottom:none;border-right:none}
+.card{padding:20px;border-right:3px solid #000;border-bottom:3px solid #000;text-decoration:none;color:#000;display:block;background:#fff;transition:background .15s}
+.card:hover{background:#ff3030;color:#fff}
+.card:nth-child(3n+2){background:#fffe00}
+.card:nth-child(3n+2):hover{background:#ff3030;color:#fff}
+.nm{font-family:'Archivo Black',sans-serif;font-size:28px;letter-spacing:-.02em;margin-bottom:6px;text-transform:uppercase;line-height:1}
+.by{font-family:'Archivo Black',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.desc{font-size:14px;line-height:1.45;font-weight:500;margin-bottom:10px}
+.free{display:inline-block;font-family:'Archivo Black',sans-serif;font-size:10px;padding:3px 7px;background:#000;color:#fff;text-transform:uppercase;letter-spacing:.1em}
+.card:hover .free{background:#fff;color:#ff3030}
+</style></head><body>
+<main class="wrap">
+<header><h1>AI<br><b>도구</b></h1><p class="sub">한국에서 진짜로 매일 쓰는 도구 + 직접 만든 것들. 과장 없이.</p></header>
+<div class="chips" id="chips"></div>
+<div class="section">CURATED <span id="cn"></span></div>
+<div class="grid" id="cur"></div>
+<div class="section">MINE <span id="mn"></span></div>
+<div class="grid" id="mine"></div>
+</main>
+<script>
+const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let T=[],C=[],f='all';
+async function load(){const[a,b]=await Promise.all([fetch('../tools.json').then(r=>r.json()),fetch('../categories.json').then(r=>r.json())]);T=a.tools;C=b.categories;render()}
+function chips(){const all=[{id:'all',name:'All'},...C];document.getElementById('chips').innerHTML=all.map(c=>`<button class="chip ${c.id===f?'on':''}" data-id="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{f=b.dataset.id;render()})}
+function card(t){return `<a class="card" href="${esc(t.url)}" target="_blank"><div class="nm">${esc(t.name)}</div><div class="by">${esc(t.by)}</div><div class="desc">${esc(t.description)}</div><span class="free">${esc(t.free)}</span></a>`}
+function render(){chips();const ff=t=>f==='all'||t.category===f;const cur=T.filter(t=>!t.is_mine&&ff(t));const mn=T.filter(t=>t.is_mine&&ff(t));document.getElementById('cur').innerHTML=cur.map(card).join('');document.getElementById('mine').innerHTML=mn.map(card).join('');document.getElementById('cn').textContent=cur.length;document.getElementById('mn').textContent=mn.length}
+load();
+</script></body></html>
