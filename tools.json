@@ -346,13 +346,13 @@
     {
       "id": "all-to-all",
       "name": "All-to-All File Converter",
-      "url": "https://github.com/commme/all-to-all",
+      "url": "https://commme.github.io/all-to-all/",
       "category": "productivity",
-      "tags": ["변환", "이미지", "영상", "오디오", "한글파일", "로컬"],
-      "description": "이미지·PDF·한글·영상·오디오를 한 번에 변환. 로컬 Python 실행.",
+      "tags": ["변환", "이미지", "PDF", "GitHub Pages", "로컬"],
+      "description": "이미지·PDF를 브라우저에서 바로 변환 (업로드 없음). 영상·한글·오디오는 로컬 서버 버전 제공.",
       "free": "완전 무료",
       "by": "commme",
-      "my_note": "Python 깔아야 됨. 그래도 다 됨.",
+      "my_note": "웹 버전은 바로 쓰고, Python 깔면 영상·한글도 가능.",
       "is_mine": true
     },
     {
