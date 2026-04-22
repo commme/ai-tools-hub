@@ -116,18 +116,6 @@
       "is_mine": false
     },
     {
-      "id": "image-tools",
-      "name": "Image Tools",
-      "url": "https://commme.github.io/image-tools/",
-      "category": "image",
-      "tags": ["워터마크", "분할", "합치기", "업스케일", "배경제거", "로컬"],
-      "description": "워터마크·분할·합치기·텍스트·업스케일을 브라우저에서 바로. 배경/사람 제거는 로컬 Flask로.",
-      "free": "완전 무료",
-      "by": "commme",
-      "my_note": "업로드 없이 본인 PC에서만 처리",
-      "is_mine": true
-    },
-    {
       "id": "kling",
       "name": "Kling AI",
       "url": "https://app.klingai.com",
@@ -365,6 +353,18 @@
       "free": "완전 무료",
       "by": "commme",
       "my_note": "카톡·CapCut ZIP 한글 깨짐·대용량 멈춤 해결용",
+      "is_mine": true
+    },
+    {
+      "id": "image-tools",
+      "name": "Image Tools",
+      "url": "https://commme.github.io/image-tools/",
+      "category": "image",
+      "tags": ["워터마크", "분할", "합치기", "업스케일", "배경제거", "로컬"],
+      "description": "워터마크·분할·합치기·텍스트·업스케일을 브라우저에서 바로. 배경/사람 제거는 로컬 Flask로.",
+      "free": "완전 무료",
+      "by": "commme",
+      "my_note": "업로드 없이 본인 PC에서만 처리",
       "is_mine": true
     },
     {
