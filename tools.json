@@ -356,6 +356,18 @@
       "is_mine": true
     },
     {
+      "id": "unzip-tool",
+      "name": "ZIP 압축 해제기",
+      "url": "https://commme.github.io/unzip-tool/",
+      "category": "productivity",
+      "tags": ["ZIP", "압축해제", "한글파일명", "드래그앤드롭", "로컬"],
+      "description": "ZIP 파일을 브라우저에서 바로 해제. 한글 파일명 자동 복원(CP949), 파일 목록 즉시 표시, 업로드 없음.",
+      "free": "완전 무료",
+      "by": "commme",
+      "my_note": "카톡·CapCut ZIP 한글 깨짐·대용량 멈춤 해결용",
+      "is_mine": true
+    },
+    {
       "id": "figma-ai",
       "name": "Figma AI",
       "url": "https://www.figma.com/ai",
