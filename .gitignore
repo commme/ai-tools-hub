@@ -7,3 +7,6 @@ node_modules/
 .omc/
 .bkit/
 .claude/
+security-audit/
+variants/
+workspace/
