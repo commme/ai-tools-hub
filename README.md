@@ -10,7 +10,7 @@
 ```
 ai-tools-hub/
 ├── index.html          ← 메인 (브루털리즘 톤, 옐로우 #DDFF00)
-├── tools.json          ← 도구 데이터 (33개)
+├── tools.json          ← 도구 데이터 (36개)
 ├── categories.json     ← 카테고리 정의 (8개)
 └── variants/           ← 21개 디자인 시안 + 갤러리
     ├── gallery.html    ← 시안 비교 + 무드/뷰포트 토글
@@ -33,7 +33,7 @@ ai-tools-hub/
   "category": "writing | research | image | video | audio | coding | productivity | design",
   "tags": ["태그1", "태그2"],
   "description": "한 줄 설명.",
-  "free": "완전 무료 | 제한적 | 유료",
+  "free": "완전 무료 | 제한적 | 유료 | 모델 비용 별도",
   "by": "제조사",
   "my_note": "내 한 줄 평 (선택)",
   "is_mine": false

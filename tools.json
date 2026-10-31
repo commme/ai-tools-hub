@@ -399,6 +399,22 @@
       "free": "완전 무료",
       "by": "Google",
       "is_mine": false
+    },
+    {
+      "id": "agent-qa",
+      "name": "agent-qa",
+      "url": "https://vostride.com",
+      "category": "coding",
+      "tags": [
+        "AI 테스트",
+        "MCP",
+        "memidex",
+        "웹·모바일"
+      ],
+      "description": "웹·모바일 AI 테스트 도구. 지속적인 memidex 메모리, 검증된 자기 개선, MCP 연동과 검토 가능한 실행 증거를 제공합니다.",
+      "free": "모델 비용 별도",
+      "by": "vostride",
+      "is_mine": false
     }
   ]
 }
